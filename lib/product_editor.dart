@@ -1,0 +1,143 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:store_dashboard/add_product.dart';
+import 'package:store_dashboard/controller/admin/admin_bloc.dart';
+import 'package:store_dashboard/edit_product.dart';
+
+class ProductEditor extends StatefulWidget {
+  const ProductEditor({super.key});
+
+  @override
+  State<ProductEditor> createState() => _ProductEditorState();
+}
+
+class _ProductEditorState extends State<ProductEditor> {
+  void _deleteProduct(int productId) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('تأكيد الحذف'),
+        content: const Text('هل أنت متأكد أنك تريد حذف هذا المنتج؟'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('حذف'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      context.read<AdminBloc>().add(DeleteProductEvent(id: productId));
+
+      // Reload after deletion
+      await Future.delayed(const Duration(milliseconds: 500));
+      setState(() {});
+    }
+  }
+
+  void _goToAddProductPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => AddProductPage()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: AdminBloc.fetchProducts(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final products = snapshot.data!;
+
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            ElevatedButton.icon(
+              icon: const Icon(Icons.add),
+              label: const Text('Go to Add Product'),
+              onPressed: _goToAddProductPage,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Product List",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            ...products.asMap().entries.map((entry) {
+              final product = entry.value;
+              // Add a local favorite state
+              bool isFavorite = product['is_favorite'] ?? false;
+
+              return Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage: product['image_url'] != null
+                        ? NetworkImage(product['image_url'])
+                        : null,
+                    child: product['image_url'] == null
+                        ? const Icon(
+                            Icons.image_not_supported,
+                            color: Colors.grey,
+                          )
+                        : null,
+                  ),
+                  title: Text(product['title']),
+                  subtitle: Text(
+                    '${product['category']} - \$${product['price']}',
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Favorite toggle
+                      IconButton(
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isFavorite = !isFavorite;
+                          });
+                          context.read<AdminBloc>().add(
+                            ToggleFavoriteEvent(
+                              productId: product['id'],
+                              isFavorite: isFavorite,
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.orange),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                EditProductPage(productId: product['id']),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteProduct(product['id']),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ],
+        );
+      },
+    );
+  }
+}
