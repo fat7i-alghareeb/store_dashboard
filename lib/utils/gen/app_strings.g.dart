@@ -5,6 +5,10 @@ part of 'app_strings.dart';
 class AppStrings {
   /// About app - عن التطبيق
   static String get aboutApp => 'aboutApp'.tr();
+  /// Add Category - إضافة فئة
+  static String get addCategory => 'addCategory'.tr();
+  /// Add Category - إضافة فئة
+  static String get addCategoryPageTitle => 'addCategoryPageTitle'.tr();
   /// Add Product - إضافة منتج
   static String get addProduct => 'addProduct'.tr();
   /// Add Review - إضافة تقييم
@@ -31,6 +35,26 @@ class AppStrings {
   static String get apply => 'apply'.tr();
   /// Arabic - العربية
   static String get arabic => 'arabic'.tr();
+  /// Are you sure you want to delete this category? - هل أنت متأكد أنك تريد حذف هذه الفئة؟
+  static String get areYouSureDeleteCategory => 'areYouSureDeleteCategory'.tr();
+  /// Are you sure you want to delete this product? - هل أنت متأكد أنك تريد حذف هذا المنتج؟
+  static String get areYouSureDeleteProduct => 'areYouSureDeleteProduct'.tr();
+  /// This email is already registered. Try logging in instead. - هذا البريد الإلكتروني مسجّل بالفعل. جرّب تسجيل الدخول.
+  static String get authEmailAlreadyRegistered => 'authEmailAlreadyRegistered'.tr();
+  /// Email not verified yet. Please check your inbox. - لم يتم تأكيد البريد الإلكتروني بعد. يرجى التحقق من صندوق الوارد.
+  static String get authEmailNotConfirmed => 'authEmailNotConfirmed'.tr();
+  /// Your email is not verified yet. We just resent the verification email. Please verify your email, then try again. - لم يتم تأكيد بريدك الإلكتروني بعد. قمنا بإعادة إرسال رسالة التأكيد. يرجى تأكيد البريد الإلكتروني ثم المحاولة مرة أخرى.
+  static String get authEmailNotConfirmedResent => 'authEmailNotConfirmedResent'.tr();
+  /// Incorrect email or password. - البريد الإلكتروني أو كلمة المرور غير صحيحة.
+  static String get authInvalidCredentials => 'authInvalidCredentials'.tr();
+  /// Please enter a valid email address. - يرجى إدخال بريد إلكتروني صحيح.
+  static String get authInvalidEmail => 'authInvalidEmail'.tr();
+  /// Sign up is currently disabled. - إنشاء الحساب غير متاح حالياً.
+  static String get authSignupDisabled => 'authSignupDisabled'.tr();
+  /// Something went wrong. Please try again. - حدث خطأ ما. يرجى المحاولة مرة أخرى.
+  static String get authSomethingWentWrong => 'authSomethingWentWrong'.tr();
+  /// No account found with this email. - لا يوجد حساب بهذا البريد الإلكتروني.
+  static String get authUserNotFound => 'authUserNotFound'.tr();
   /// Buy now - اشتري الآن
   static String get buyNow => 'buyNow'.tr();
   /// By clicking on the register button, you agree to the public offer - بالنقر على زر التسجيل، فإنك توافق على العرض العام
@@ -49,6 +73,14 @@ class AppStrings {
   static String get categories => 'categories'.tr();
   /// Category - الفئة
   static String get category => 'category'.tr();
+  /// Category added successfully! - تمت إضافة الفئة بنجاح!
+  static String get categoryAddedSuccessfully => 'categoryAddedSuccessfully'.tr();
+  /// Category deleted successfully - تم حذف الفئة بنجاح
+  static String get categoryDeletedSuccessfully => 'categoryDeletedSuccessfully'.tr();
+  /// Category Manager - إدارة الفئات
+  static String get categoryManager => 'categoryManager'.tr();
+  /// Category Name - اسم الفئة
+  static String get categoryName => 'categoryName'.tr();
   /// Change language - تغيير اللغة
   static String get changeLanguage => 'changeLanguage'.tr();
   /// Check Verification - التحقق من التأكيد
@@ -57,6 +89,8 @@ class AppStrings {
   static String get checkout => 'checkout'.tr();
   /// Color - اللون
   static String get color => 'color'.tr();
+  /// Confirm Delete - تأكيد الحذف
+  static String get confirmDelete => 'confirmDelete'.tr();
   /// Confirm password - تأكيد كلمة المرور
   static String get confirmPassword => 'confirmPassword'.tr();
   /// Confirm Your Email - تأكيد البريد الإلكتروني
@@ -77,6 +111,8 @@ class AppStrings {
   static String get deals => 'deals'.tr();
   /// An error occurred while loading deals. Tap to retry. - حدث خطأ أثناء تحميل العروض. اضغط لإعادة المحاولة.
   static String get dealsLoadErrorRetry => 'dealsLoadErrorRetry'.tr();
+  /// Delete - حذف
+  static String get delete => 'delete'.tr();
   /// Delivery fee - رسوم التوصيل
   static String get deliveryFee => 'deliveryFee'.tr();
   /// Description - الوصف
@@ -87,6 +123,10 @@ class AppStrings {
   static String get dontHaveAnAccount => 'dontHaveAnAccount'.tr();
   /// Edit Address - تعديل العنوان
   static String get editAddress => 'editAddress'.tr();
+  /// Edit Product - تعديل المنتج
+  static String get editProduct => 'editProduct'.tr();
+  /// Edit Products - تعديل المنتجات
+  static String get editProducts => 'editProducts'.tr();
   /// Edit Profile - تعديل الملف الشخصي
   static String get editProfile => 'editProfile'.tr();
   /// Edit Review - تعديل التقييم
@@ -105,6 +145,8 @@ class AppStrings {
   static String get enterValidEmail => 'enterValidEmail'.tr();
   /// Enter your address - أدخل عنوانك
   static String get enterYourAddress => 'enterYourAddress'.tr();
+  /// Error adding category - خطأ في إضافة الفئة
+  static String get errorAddingCategory => 'errorAddingCategory'.tr();
   /// Error loading products. - حدث خطأ أثناء تحميل المنتجات.
   static String get errorLoadingProducts => 'errorLoadingProducts'.tr();
   /// Error updating profile - حدث خطأ أثناء تحديث الملف الشخصي
@@ -121,8 +163,12 @@ class AppStrings {
   static String get favoritesTitle => 'favoritesTitle'.tr();
   /// Error while fetching categories - خطأ أثناء جلب الفئات
   static String get fetchCategoriesError => 'fetchCategoriesError'.tr();
+  /// Title - العنوان
+  static String get fieldTitle => 'fieldTitle'.tr();
   /// Gallery - المعرض
   static String get gallery => 'gallery'.tr();
+  /// Go to Add Product - الانتقال لإضافة منتج
+  static String get goToAddProduct => 'goToAddProduct'.tr();
   /// Grand total - المجموع الكلي
   static String get grandTotal => 'grandTotal'.tr();
   /// Home - الرئيسية
@@ -153,6 +199,8 @@ class AppStrings {
   static String get name => 'name'.tr();
   /// No address set - لم يتم تعيين عنوان
   static String get noAddressSet => 'noAddressSet'.tr();
+  /// No categories found - لم يتم العثور على فئات
+  static String get noCategoriesFound => 'noCategoriesFound'.tr();
   /// No deals available right now. - لا توجد عروض حالياً.
   static String get noDealsNow => 'noDealsNow'.tr();
   /// No favorites yet - لا توجد عناصر في المفضلة بعد
@@ -167,6 +215,8 @@ class AppStrings {
   static String get noReviewsYet => 'noReviewsYet'.tr();
   /// No user data. - لا توجد بيانات مستخدم.
   static String get noUserData => 'noUserData'.tr();
+  /// OK - حسناً
+  static String get ok => 'ok'.tr();
   /// or - أو
   static String get or => 'or'.tr();
   /// ORIGAMI CATEGORIES - فئات ORIGAMI
@@ -179,14 +229,28 @@ class AppStrings {
   static String get phoneNumber => 'phoneNumber'.tr();
   /// Phone (optional) - الهاتف (اختياري)
   static String get phoneOptional => 'phoneOptional'.tr();
+  /// Please enter Category name - يرجى إدخال اسم الفئة
+  static String get pleaseEnterCategoryName => 'pleaseEnterCategoryName'.tr();
+  /// Please enter price - يرجى إدخال السعر
+  static String get pleaseEnterPrice => 'pleaseEnterPrice'.tr();
+  /// Please enter product name - يرجى إدخال اسم المنتج
+  static String get pleaseEnterProductName => 'pleaseEnterProductName'.tr();
   /// Please fill all fields and select an image. - يرجى تعبئة جميع الحقول واختيار صورة
   static String get pleaseFillAllFieldsAndSelectImage => 'pleaseFillAllFieldsAndSelectImage'.tr();
+  /// Please select a category - يرجى اختيار فئة
+  static String get pleaseSelectACategory => 'pleaseSelectACategory'.tr();
+  /// Please select an image - يرجى اختيار صورة
+  static String get pleaseSelectAnImage => 'pleaseSelectAnImage'.tr();
   /// Price - السعر
   static String get price => 'price'.tr();
+  /// Product Added - تمت إضافة المنتج
+  static String get productAdded => 'productAdded'.tr();
   /// Product added successfully - تمت إضافة المنتج بنجاح
   static String get productAddedSuccessfully => 'productAddedSuccessfully'.tr();
   /// Product Details - تفاصيل المنتج
   static String get productDetails => 'productDetails'.tr();
+  /// Product List - قائمة المنتجات
+  static String get productList => 'productList'.tr();
   /// Product name - اسم المنتج
   static String get productName => 'productName'.tr();
   /// An error occurred while loading products - حدث خطأ أثناء تحميل المنتجات
@@ -259,8 +323,14 @@ class AppStrings {
   static String get specialDeals => 'specialDeals'.tr();
   /// Special offers - عروض خاصة
   static String get specialOffers => 'specialOffers'.tr();
+  /// Store Management Wizard - معالج إدارة المتجر
+  static String get storeManagementWizard => 'storeManagementWizard'.tr();
   /// Submit - إرسال
   static String get submit => 'submit'.tr();
+  /// Submit Category - إرسال الفئة
+  static String get submitCategory => 'submitCategory'.tr();
+  /// Submit Product - إرسال المنتج
+  static String get submitProduct => 'submitProduct'.tr();
   /// subscription - اشتراك
   static String get subscription => 'subscription'.tr();
   /// Subtotal - الإجمالي

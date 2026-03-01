@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:store_dashboard/utils/gen/app_strings.dart';
+
 class EditCategory extends StatefulWidget {
   final int productId;
 
@@ -52,25 +54,27 @@ class _EditCategoryPageState extends State<EditCategory> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Edit Product')),
+          appBar: AppBar(title: Text(AppStrings.editProduct)),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
                 TextField(
                   controller: _titleController,
-                  decoration: const InputDecoration(labelText: 'Title'),
+                  decoration: InputDecoration(labelText: AppStrings.fieldTitle),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _priceController,
-                  decoration: const InputDecoration(labelText: 'Price'),
+                  decoration: InputDecoration(labelText: AppStrings.price),
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _descriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
+                  decoration: InputDecoration(
+                    labelText: AppStrings.description,
+                  ),
                   maxLines: 3,
                 ),
                 const SizedBox(height: 20),
@@ -85,7 +89,7 @@ class _EditCategoryPageState extends State<EditCategory> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Text('No categories found');
+                      return Text(AppStrings.noCategoriesFound);
                     }
 
                     final categories = snapshot.data!;
@@ -101,16 +105,19 @@ class _EditCategoryPageState extends State<EditCategory> {
                           .toList(),
                       onChanged: (val) =>
                           setState(() => _selectedCategory = val),
-                      decoration: const InputDecoration(labelText: 'Category'),
-                      validator: (value) =>
-                          value == null ? 'Please select a category' : null,
+                      decoration: InputDecoration(
+                        labelText: AppStrings.category,
+                      ),
+                      validator: (value) => value == null
+                          ? AppStrings.pleaseSelectACategory
+                          : null,
                     );
                   },
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.save),
-                  label: const Text('Save'),
+                  label: Text(AppStrings.save),
                   onPressed: _saveChanges,
                 ),
               ],

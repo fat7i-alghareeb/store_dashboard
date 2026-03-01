@@ -1,5 +1,5 @@
 import 'package:flutter/animation.dart';
-import 'package:flutter/material.dart' show EdgeInsets;
+import 'package:flutter/material.dart' show EdgeInsets, Size;
 import 'package:flutter_screenutil/flutter_screenutil.dart' show REdgeInsets;
 
 /// Global design constants used across the app.
@@ -87,5 +87,12 @@ class AppCurves {
 class AppDesign {
   AppDesign._();
 
-  static const Size designSize = Size(390, 844); // iPhone 13 / common base
+  /// Mobile base (iPhone 13)
+  static const Size mobileDesignSize = Size(390, 844);
+
+  /// Desktop / Windows base
+  static const Size desktopDesignSize = Size(1440, 900);
+
+  /// Desktop / Windows minimum window size
+  static const Size desktopMinWindowSize = Size(1100, 700);
 }

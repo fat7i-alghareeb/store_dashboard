@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:store_dashboard/utils/bloc_status/bloc_status.dart'
     show BlocStatus, BlocStatusPatterns;
 
+import 'package:store_dashboard/utils/gen/app_strings.dart';
+
 class StatusBuilder<T> extends StatelessWidget {
   const StatusBuilder({
     super.key,
@@ -48,7 +50,7 @@ class StatusBuilder<T> extends StatelessWidget {
         next = Column(
           children: [
             Text(message),
-            ElevatedButton(onPressed: onError, child: const Text("Retry")),
+            ElevatedButton(onPressed: onError, child: Text(AppStrings.reset)),
           ],
         );
       },

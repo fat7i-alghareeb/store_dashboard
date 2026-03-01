@@ -10,7 +10,7 @@ import '../../utils/services/storage/storage_service.dart';
 /// controller to rebuild when the theme changes.
 @lazySingleton
 class ThemeController extends ChangeNotifier {
-  ThemeController(this._storage) : _themeMode = ThemeMode.light;
+  ThemeController(this._storage) : _themeMode = ThemeMode.dark;
 
   static const String _themeModeStorageKey = 'theme.mode';
 

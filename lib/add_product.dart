@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
-import 'package:store_dashboard/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:store_dashboard/utils/gen/app_strings.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
@@ -26,8 +27,8 @@ class _AddProductPageState extends State<AddProductPage> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('Product Added'),
-          content: const Text('Product has been added successfully.'),
+          title: Text(AppStrings.productAdded),
+          content: Text(AppStrings.productAddedSuccessfully),
           actions: [
             TextButton(
               onPressed: () {
@@ -45,7 +46,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                 );
               },
-              child: const Text('OK'),
+              child: Text(AppStrings.ok),
             ),
           ],
         ),
@@ -56,7 +57,7 @@ class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Product')),
+      appBar: AppBar(title: Text(AppStrings.addProduct)),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -66,19 +67,19 @@ class _AddProductPageState extends State<AddProductPage> {
               // اسم المنتج
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Product Name'),
+                decoration: InputDecoration(labelText: AppStrings.productName),
                 validator: (value) =>
-                    value!.isEmpty ? 'Please enter product name' : null,
+                    value!.isEmpty ? AppStrings.pleaseEnterProductName : null,
               ),
               const SizedBox(height: 10),
 
               // السعر
               TextFormField(
                 controller: _priceController,
-                decoration: const InputDecoration(labelText: 'Price'),
+                decoration: InputDecoration(labelText: AppStrings.price),
                 keyboardType: TextInputType.number,
                 validator: (value) =>
-                    value!.isEmpty ? 'Please enter price' : null,
+                    value!.isEmpty ? AppStrings.pleaseEnterPrice : null,
               ),
               const SizedBox(height: 10),
 
@@ -94,12 +95,12 @@ class _AddProductPageState extends State<AddProductPage> {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text('No categories found');
+                    return Text(AppStrings.noCategoriesFound);
                   }
 
                   final categories = snapshot.data!;
                   return DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     items: categories
                         .map(
                           (cat) => DropdownMenuItem<String>(
@@ -109,9 +110,9 @@ class _AddProductPageState extends State<AddProductPage> {
                         )
                         .toList(),
                     onChanged: (val) => setState(() => _selectedCategory = val),
-                    decoration: const InputDecoration(labelText: 'Category'),
+                    decoration: InputDecoration(labelText: AppStrings.category),
                     validator: (value) =>
-                        value == null ? 'Please select a category' : null,
+                        value == null ? AppStrings.pleaseSelectACategory : null,
                   );
                 },
               ),
@@ -121,7 +122,7 @@ class _AddProductPageState extends State<AddProductPage> {
               TextFormField(
                 controller: _descriptionController,
                 maxLines: 3,
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: AppStrings.description),
               ),
               const SizedBox(height: 20),
 
@@ -138,7 +139,7 @@ class _AddProductPageState extends State<AddProductPage> {
               // زر الإرسال
               ElevatedButton.icon(
                 icon: const Icon(Icons.save),
-                label: const Text('Submit Product'),
+                label: Text(AppStrings.submitProduct),
                 onPressed: _submitProduct,
               ),
             ],

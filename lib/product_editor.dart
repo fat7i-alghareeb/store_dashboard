@@ -4,6 +4,8 @@ import 'package:store_dashboard/add_product.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
 import 'package:store_dashboard/edit_product.dart';
 
+import 'package:store_dashboard/utils/gen/app_strings.dart';
+
 class ProductEditor extends StatefulWidget {
   const ProductEditor({super.key});
 
@@ -16,16 +18,16 @@ class _ProductEditorState extends State<ProductEditor> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تأكيد الحذف'),
-        content: const Text('هل أنت متأكد أنك تريد حذف هذا المنتج؟'),
+        title: Text(AppStrings.confirmDelete),
+        content: Text(AppStrings.areYouSureDeleteProduct),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('إلغاء'),
+            child: Text(AppStrings.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('حذف'),
+            child: Text(AppStrings.delete),
           ),
         ],
       ),
@@ -63,13 +65,13 @@ class _ProductEditorState extends State<ProductEditor> {
           children: [
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
-              label: const Text('Go to Add Product'),
+              label: Text(AppStrings.goToAddProduct),
               onPressed: _goToAddProductPage,
             ),
             const SizedBox(height: 20),
-            const Text(
-              "Product List",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              AppStrings.productList,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             ...products.asMap().entries.map((entry) {
@@ -134,7 +136,7 @@ class _ProductEditorState extends State<ProductEditor> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         );
       },

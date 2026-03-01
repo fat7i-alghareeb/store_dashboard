@@ -4,6 +4,8 @@ import 'package:store_dashboard/add_category.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:store_dashboard/utils/gen/app_strings.dart';
+
 class CategoryManager extends StatefulWidget {
   const CategoryManager({super.key});
 
@@ -59,12 +61,12 @@ class _CategoryManagerState extends State<CategoryManager> {
           setState(() => _deleting = false);
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Category deleted successfully')),
+            SnackBar(content: Text(AppStrings.categoryDeletedSuccessfully)),
           );
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Category Manager')),
+        appBar: AppBar(title: Text(AppStrings.categoryManager)),
         body: Stack(
           children: [
             _loading
@@ -80,7 +82,7 @@ class _CategoryManagerState extends State<CategoryManager> {
                             padding: const EdgeInsets.only(bottom: 16.0),
                             child: ElevatedButton.icon(
                               icon: const Icon(Icons.add),
-                              label: const Text('Add Category'),
+                              label: Text(AppStrings.addCategory),
                               onPressed: _onAddCategory,
                             ),
                           );
@@ -113,20 +115,20 @@ class _CategoryManagerState extends State<CategoryManager> {
                                     final confirm = await showDialog<bool>(
                                       context: context,
                                       builder: (_) => AlertDialog(
-                                        title: const Text('Confirm Delete'),
-                                        content: const Text(
-                                          'Are you sure you want to delete this category?',
+                                        title: Text(AppStrings.confirmDelete),
+                                        content: Text(
+                                          AppStrings.areYouSureDeleteCategory,
                                         ),
                                         actions: [
                                           TextButton(
                                             onPressed: () =>
                                                 Navigator.pop(context, false),
-                                            child: const Text('Cancel'),
+                                            child: Text(AppStrings.cancel),
                                           ),
                                           TextButton(
                                             onPressed: () =>
                                                 Navigator.pop(context, true),
-                                            child: const Text('Delete'),
+                                            child: Text(AppStrings.delete),
                                           ),
                                         ],
                                       ),

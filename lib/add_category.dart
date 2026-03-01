@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
-import 'package:store_dashboard/image_picker.dart';
+
+import 'package:store_dashboard/utils/gen/app_strings.dart';
 
 class AddCategoryPage extends StatefulWidget {
   const AddCategoryPage({super.key});
@@ -29,7 +30,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     } else if (_selectedImage == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Please select an image')));
+      ).showSnackBar(SnackBar(content: Text(AppStrings.pleaseSelectAnImage)));
     }
   }
 
@@ -43,7 +44,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Category added successfully!')),
+            SnackBar(content: Text(AppStrings.categoryAddedSuccessfully)),
           );
 
           // Pop after a short delay so the user sees the SnackBar
@@ -55,12 +56,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Error adding category')),
+            SnackBar(content: Text(AppStrings.errorAddingCategory)),
           );
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Add Category')),
+        appBar: AppBar(title: Text(AppStrings.addCategoryPageTitle)),
         body: Stack(
           children: [
             Padding(
@@ -71,11 +72,12 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                   children: [
                     TextFormField(
                       controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Category Name',
+                      decoration: InputDecoration(
+                        labelText: AppStrings.categoryName,
                       ),
-                      validator: (value) =>
-                          value!.isEmpty ? 'Please enter Category name' : null,
+                      validator: (value) => value!.isEmpty
+                          ? AppStrings.pleaseEnterCategoryName
+                          : null,
                     ),
                     const SizedBox(height: 10),
                     // ImagePicker(
@@ -88,7 +90,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.save),
-                      label: const Text('Submit Category'),
+                      label: Text(AppStrings.submitCategory),
                       onPressed: _isLoading ? null : _submitCategory,
                     ),
                   ],

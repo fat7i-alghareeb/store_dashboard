@@ -90,6 +90,7 @@ dependencies:
   smooth_page_indicator: ^2.0.1
   google_fonts: ^8.0.2
   carousel_slider: ^5.1.2
+  window_manager: ^0.5.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

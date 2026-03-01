@@ -1,3 +1,6 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,7 +9,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:store_dashboard/catigory_manager.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
-import 'package:store_dashboard/deals_manager.dart';
 import 'package:store_dashboard/product_editor.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -18,10 +20,18 @@ import 'package:store_dashboard/utils/constants/design_constants.dart';
 import 'package:store_dashboard/utils/services/injection/injectable.dart';
 import 'package:store_dashboard/utils/services/localization/locale_service.dart';
 import 'package:store_dashboard/utils/services/network/logging_http_client.dart';
+import 'package:store_dashboard/utils/gen/app_strings.dart';
 import 'package:store_dashboard/utils/tool/localization_config.dart';
+
+import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (!kIsWeb && Platform.isWindows) {
+    await windowManager.ensureInitialized();
+    await windowManager.setMinimumSize(AppDesign.desktopMinWindowSize);
+  }
   try {
     await dotenv.load();
   } catch (e) {
@@ -73,7 +83,12 @@ Future<void> main() async {
       fallbackLocale: const Locale(AppLocalizationConfig.fallbackLanguageCode),
       startLocale: startLocale,
       child: ScreenUtilInit(
-        designSize: AppDesign.designSize,
+        designSize: kIsWeb || Platform.isWindows
+            ? AppDesign.desktopDesignSize
+            : AppDesign.mobileDesignSize,
+        fontSizeResolver: (fontSize, instance) {
+          return fontSize.toDouble();
+        },
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
@@ -145,29 +160,24 @@ class _WizardHomeState extends State<WizardHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Store Management Wizard')),
+      appBar: AppBar(title: Text(AppStrings.storeManagementWizard)),
       body: _screens[_currentIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
           setState(() {
-            _currentIndex = index;
+            _currentIndex = index.clamp(0, _screens.length - 1);
           });
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.category),
-            label: 'Categories',
+            icon: const Icon(Icons.category),
+            label: AppStrings.categories,
           ),
           NavigationDestination(
-            icon: Icon(Icons.edit, color: Colors.white),
-            label: 'Edit Products',
+            icon: const Icon(Icons.edit, color: Colors.white),
+            label: AppStrings.editProducts,
           ),
-          NavigationDestination(
-            icon: Icon(Icons.favorite_border),
-            label: 'Deals',
-          ),
-
           // NavigationDestination(icon: Icon(Icons.edit), label: 'Speichal Products'),
           // NavigationDestination(icon: Icon(Icons.edit), label: 'Admins'),
         ],
