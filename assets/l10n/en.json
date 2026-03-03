@@ -167,6 +167,11 @@
     "categoryDeletedSuccessfully": "Category deleted successfully",
     "confirmDelete": "Confirm Delete",
     "areYouSureDeleteCategory": "Are you sure you want to delete this category?",
+    "retry": "Retry",
+    "pickImage": "Pick image",
+    "noImageSelected": "No image selected",
+    "editCategory": "Edit Category",
+    "edit": "Edit",
     "delete": "Delete",
     "editProducts": "Edit Products",
     "goToAddProduct": "Go to Add Product",
@@ -180,5 +185,7 @@
     "ok": "OK",
     "editProduct": "Edit Product",
     "fieldTitle": "Title",
-    "areYouSureDeleteProduct": "Are you sure you want to delete this product?"
+    "areYouSureDeleteProduct": "Are you sure you want to delete this product?",
+    "dashboardAppName": "Evolvo Dashboard",
+    "search": "Search..."
 }

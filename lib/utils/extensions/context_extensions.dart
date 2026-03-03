@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// Layout and focus utilities for [BuildContext].
 ///
@@ -48,9 +49,12 @@ extension AppContextExtensions on BuildContext {
 
   bool get isLtr => !isRtl;
 
-  IconData get backArrowIcon => isRtl ? Icons.arrow_forward : Icons.arrow_back;
+  IconData get backArrowIcon =>
+      isRtl ? FontAwesomeIcons.arrowRight : FontAwesomeIcons.arrowLeft;
 
-  IconData get startIcon => isRtl ? Icons.chevron_right : Icons.chevron_left;
+  IconData get startIcon =>
+      isRtl ? FontAwesomeIcons.chevronRight : FontAwesomeIcons.chevronLeft;
 
-  IconData get endIcon => isRtl ? Icons.chevron_left : Icons.chevron_right;
+  IconData get endIcon =>
+      isRtl ? FontAwesomeIcons.chevronLeft : FontAwesomeIcons.chevronRight;
 }

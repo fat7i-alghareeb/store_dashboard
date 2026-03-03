@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -122,7 +123,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.save),
+                  icon: const FaIcon(FontAwesomeIcons.floppyDisk),
                   label: Text(AppStrings.save),
                   onPressed: _saveChanges,
                 ),

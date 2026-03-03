@@ -107,6 +107,8 @@ class AppStrings {
   static String get createAnAccount => 'createAnAccount'.tr();
   /// Customer reviews - تقييمات العملاء
   static String get customerReviews => 'customerReviews'.tr();
+  /// Evolvo Dashboard - لوحة تحكم Evolvo
+  static String get dashboardAppName => 'dashboardAppName'.tr();
   /// Deals - العروض
   static String get deals => 'deals'.tr();
   /// An error occurred while loading deals. Tap to retry. - حدث خطأ أثناء تحميل العروض. اضغط لإعادة المحاولة.
@@ -121,8 +123,12 @@ class AppStrings {
   static String get dontHaveAccountSignUp => 'dontHaveAccountSignUp'.tr();
   /// Don’t have an account - ليس لديك حساب؟
   static String get dontHaveAnAccount => 'dontHaveAnAccount'.tr();
+  /// Edit - تعديل
+  static String get edit => 'edit'.tr();
   /// Edit Address - تعديل العنوان
   static String get editAddress => 'editAddress'.tr();
+  /// Edit Category - تعديل الفئة
+  static String get editCategory => 'editCategory'.tr();
   /// Edit Product - تعديل المنتج
   static String get editProduct => 'editProduct'.tr();
   /// Edit Products - تعديل المنتجات
@@ -205,6 +211,8 @@ class AppStrings {
   static String get noDealsNow => 'noDealsNow'.tr();
   /// No favorites yet - لا توجد عناصر في المفضلة بعد
   static String get noFavoritesYet => 'noFavoritesYet'.tr();
+  /// No image selected - لم يتم اختيار صورة
+  static String get noImageSelected => 'noImageSelected'.tr();
   /// No products found - لم يتم العثور على منتجات
   static String get noProductsFound => 'noProductsFound'.tr();
   /// No products in this category - لا توجد منتجات في هذه الفئة
@@ -229,6 +237,8 @@ class AppStrings {
   static String get phoneNumber => 'phoneNumber'.tr();
   /// Phone (optional) - الهاتف (اختياري)
   static String get phoneOptional => 'phoneOptional'.tr();
+  /// Pick image - اختيار صورة
+  static String get pickImage => 'pickImage'.tr();
   /// Please enter Category name - يرجى إدخال اسم الفئة
   static String get pleaseEnterCategoryName => 'pleaseEnterCategoryName'.tr();
   /// Please enter price - يرجى إدخال السعر
@@ -269,6 +279,8 @@ class AppStrings {
   static String get realUsersProducts => 'realUsersProducts'.tr();
   /// Reset - إعادة ضبط
   static String get reset => 'reset'.tr();
+  /// Retry - إعادة المحاولة
+  static String get retry => 'retry'.tr();
   /// Reviews - تقييمات
   static String get reviews => 'reviews'.tr();
   /// Reviews can only be submitted after purchase - يمكن إرسال التقييم بعد الشراء فقط
@@ -277,6 +289,8 @@ class AppStrings {
   static String get save => 'save'.tr();
   /// Save Changes - حفظ التغييرات
   static String get saveChanges => 'saveChanges'.tr();
+  /// Search... - بحث...
+  static String get search => 'search'.tr();
   /// Search for anything - ابحث عن أي شيء
   static String get searchForAnythingEn => 'searchForAnythingEn'.tr();
   /// Search any Product.. - ابحث عن أي منتج...

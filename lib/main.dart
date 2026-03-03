@@ -7,9 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
-import 'package:store_dashboard/catigory_manager.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
-import 'package:store_dashboard/product_editor.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,8 +18,9 @@ import 'package:store_dashboard/utils/constants/design_constants.dart';
 import 'package:store_dashboard/utils/services/injection/injectable.dart';
 import 'package:store_dashboard/utils/services/localization/locale_service.dart';
 import 'package:store_dashboard/utils/services/network/logging_http_client.dart';
-import 'package:store_dashboard/utils/gen/app_strings.dart';
 import 'package:store_dashboard/utils/tool/localization_config.dart';
+
+import 'package:store_dashboard/features/shell/view/dashboard_shell.dart';
 
 import 'package:window_manager/window_manager.dart';
 
@@ -31,6 +30,10 @@ Future<void> main() async {
   if (!kIsWeb && Platform.isWindows) {
     await windowManager.ensureInitialized();
     await windowManager.setMinimumSize(AppDesign.desktopMinWindowSize);
+    await windowManager.setTitleBarStyle(
+      TitleBarStyle.hidden,
+      windowButtonVisibility: false,
+    );
   }
   try {
     await dotenv.load();
@@ -124,7 +127,7 @@ class StoreControlPanel extends StatelessWidget {
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
-          home: const WizardHome(),
+          home: const DashboardShell(),
           builder: (context, child) {
             final theme = Theme.of(context);
             final overlayStyle = AppSystemUiOverlay.forTheme(theme);
@@ -136,52 +139,6 @@ class StoreControlPanel extends StatelessWidget {
           },
         );
       },
-    );
-  }
-}
-
-class WizardHome extends StatefulWidget {
-  const WizardHome({super.key});
-
-  @override
-  State<WizardHome> createState() => _WizardHomeState();
-}
-
-class _WizardHomeState extends State<WizardHome> {
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = const [
-    CategoryManager(),
-    ProductEditor(),
-    // DealsManagerScreen(),
-    // Add other panels like OrderManager(), SettingsPanel(), etc.
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.storeManagementWizard)),
-      body: _screens[_currentIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _currentIndex = index.clamp(0, _screens.length - 1);
-          });
-        },
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.category),
-            label: AppStrings.categories,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.edit, color: Colors.white),
-            label: AppStrings.editProducts,
-          ),
-          // NavigationDestination(icon: Icon(Icons.edit), label: 'Speichal Products'),
-          // NavigationDestination(icon: Icon(Icons.edit), label: 'Admins'),
-        ],
-      ),
     );
   }
 }

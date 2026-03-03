@@ -147,21 +147,27 @@ class AppColorSeeds {
   /// Seed colors for the light theme.
   static const AppColorSeedSet light = AppColorSeedSet(
     primary: AppColors.primaryLight,
-    onPrimary: AppColors.backGroundLight,
+    onPrimary: Colors.white,
     secondary: AppColors.secondaryLight,
     background: AppColors.backGroundLight,
-    surface: AppColors.backGroundLight,
+    surface: Colors.white,
+    surfaceVariant: AppColors.secondaryLight,
     outline: AppColors.greyLight,
+    outlineVariant: AppColors.greyLight,
   );
 
   /// Seed colors for the dark theme.
   static const AppColorSeedSet dark = AppColorSeedSet(
     primary: AppColors.primaryDark,
-    onPrimary: AppColors.backGroundDark,
+    onPrimary: Colors.white,
     secondary: AppColors.secondaryDark,
     background: AppColors.backGroundDark,
     surface: AppColors.backGroundDark,
+    surfaceVariant: AppColors.secondaryDark,
     outline: AppColors.greyDark,
+    outlineVariant: AppColors.greyDark,
+    onSurface: Colors.white,
+    onSurfaceVariant: Color(0xFFB6C3E0),
   );
 }
 

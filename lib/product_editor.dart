@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:store_dashboard/add_product.dart';
 import 'package:store_dashboard/controller/admin/admin_bloc.dart';
 import 'package:store_dashboard/edit_product.dart';
@@ -64,7 +65,7 @@ class _ProductEditorState extends State<ProductEditor> {
           padding: const EdgeInsets.all(16),
           children: [
             ElevatedButton.icon(
-              icon: const Icon(Icons.add),
+              icon: const FaIcon(FontAwesomeIcons.plus),
               label: Text(AppStrings.goToAddProduct),
               onPressed: _goToAddProductPage,
             ),
@@ -88,8 +89,8 @@ class _ProductEditorState extends State<ProductEditor> {
                         ? NetworkImage(product['image_url'])
                         : null,
                     child: product['image_url'] == null
-                        ? const Icon(
-                            Icons.image_not_supported,
+                        ? const FaIcon(
+                            FontAwesomeIcons.image,
                             color: Colors.grey,
                           )
                         : null,
@@ -103,9 +104,12 @@ class _ProductEditorState extends State<ProductEditor> {
                     children: [
                       // Favorite toggle
                       IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                        icon: FaIcon(
+                          isFavorite
+                              ? FontAwesomeIcons.solidHeart
+                              : FontAwesomeIcons.heart,
                           color: isFavorite ? Colors.red : Colors.grey,
+                          size: 18,
                         ),
                         onPressed: () {
                           setState(() {
@@ -120,7 +124,11 @@ class _ProductEditorState extends State<ProductEditor> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.orange),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.penToSquare,
+                          color: Colors.orange,
+                          size: 18,
+                        ),
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
@@ -129,7 +137,11 @@ class _ProductEditorState extends State<ProductEditor> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
+                        icon: const FaIcon(
+                          FontAwesomeIcons.trashCan,
+                          color: Colors.red,
+                          size: 18,
+                        ),
                         onPressed: () => _deleteProduct(product['id']),
                       ),
                     ],

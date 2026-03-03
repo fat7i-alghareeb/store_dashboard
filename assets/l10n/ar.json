@@ -167,6 +167,11 @@
     "categoryDeletedSuccessfully": "تم حذف الفئة بنجاح",
     "confirmDelete": "تأكيد الحذف",
     "areYouSureDeleteCategory": "هل أنت متأكد أنك تريد حذف هذه الفئة؟",
+    "retry": "إعادة المحاولة",
+    "pickImage": "اختيار صورة",
+    "noImageSelected": "لم يتم اختيار صورة",
+    "editCategory": "تعديل الفئة",
+    "edit": "تعديل",
     "delete": "حذف",
     "editProducts": "تعديل المنتجات",
     "goToAddProduct": "الانتقال لإضافة منتج",
@@ -180,5 +185,7 @@
     "ok": "حسناً",
     "editProduct": "تعديل المنتج",
     "fieldTitle": "العنوان",
-    "areYouSureDeleteProduct": "هل أنت متأكد أنك تريد حذف هذا المنتج؟"
+    "areYouSureDeleteProduct": "هل أنت متأكد أنك تريد حذف هذا المنتج؟",
+    "dashboardAppName": "لوحة تحكم Evolvo",
+    "search": "بحث..."
 }
