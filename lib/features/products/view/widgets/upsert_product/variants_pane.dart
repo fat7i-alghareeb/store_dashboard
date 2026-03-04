@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -25,11 +23,13 @@ class VariantsPane extends StatelessWidget {
     required this.onAddVariant,
     required this.onRemoveVariant,
     required this.onRemoveImage,
+    required this.onMoveImageLeft,
+    required this.onMoveImageRight,
   });
 
   final bool enabled;
   final ProductColor? selectedColor;
-  final List<File> images;
+  final List<VariantImageDraft> images;
   final List<VariantDraft> variants;
   final BlocStatus<List<ProductColor>> colorsStatus;
   final ValueChanged<ProductColor?> onSelectColor;
@@ -39,6 +39,8 @@ class VariantsPane extends StatelessWidget {
   final VoidCallback onAddVariant;
   final ValueChanged<int> onRemoveVariant;
   final ValueChanged<int> onRemoveImage;
+  final ValueChanged<int> onMoveImageLeft;
+  final ValueChanged<int> onMoveImageRight;
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +126,18 @@ class VariantsPane extends StatelessWidget {
                         loading: () =>
                             const LinearProgressIndicator(minHeight: 2),
                         success: (colors) {
+                          ProductColor? resolvedSelected;
+                          final sel = selectedColor;
+                          if (sel != null) {
+                            for (final c in colors) {
+                              if (c.id == sel.id) {
+                                resolvedSelected = c;
+                                break;
+                              }
+                            }
+                          }
                           return DropdownButtonFormField<ProductColor>(
-                            initialValue: selectedColor,
+                            initialValue: resolvedSelected,
                             isExpanded: true,
                             items: colors
                                 .map(
@@ -248,8 +260,12 @@ class VariantsPane extends StatelessWidget {
                                 children: List.generate(images.length, (i) {
                                   final f = images[i];
                                   return _ImageThumbnail(
-                                    file: f,
+                                    image: f,
                                     onRemove: () => onRemoveImage(i),
+                                    canMoveLeft: i > 0,
+                                    canMoveRight: i < images.length - 1,
+                                    onMoveLeft: () => onMoveImageLeft(i),
+                                    onMoveRight: () => onMoveImageRight(i),
                                   );
                                 }),
                               ),
@@ -362,6 +378,52 @@ class VariantsPane extends StatelessWidget {
   }
 }
 
+class _ReorderButton extends StatelessWidget {
+  const _ReorderButton({
+    required this.enabled,
+    required this.tooltip,
+    required this.icon,
+    required this.onTap,
+    required this.scheme,
+  });
+
+  final bool enabled;
+  final String tooltip;
+  final IconData icon;
+  final VoidCallback onTap;
+  final ColorScheme scheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: enabled ? onTap : null,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: enabled ? 0.55 : 0.25),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: enabled
+                  ? scheme.outlineVariant.withValues(alpha: 0.35)
+                  : scheme.outlineVariant.withValues(alpha: 0.15),
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Icon(
+            icon,
+            size: 16,
+            color: Colors.white.withValues(alpha: enabled ? 1 : 0.6),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // ==================== HELPER WIDGETS ====================
 
 class _StepCard extends StatelessWidget {
@@ -456,18 +518,54 @@ class _StepCard extends StatelessWidget {
 }
 
 class _ImageThumbnail extends StatelessWidget {
-  const _ImageThumbnail({required this.file, required this.onRemove});
+  const _ImageThumbnail({
+    required this.image,
+    required this.onRemove,
+    required this.canMoveLeft,
+    required this.canMoveRight,
+    required this.onMoveLeft,
+    required this.onMoveRight,
+  });
 
-  final File file;
+  final VariantImageDraft image;
   final VoidCallback onRemove;
+  final bool canMoveLeft;
+  final bool canMoveRight;
+  final VoidCallback onMoveLeft;
+  final VoidCallback onMoveRight;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
     return Stack(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.file(file, width: 80, height: 80, fit: BoxFit.cover),
+              child: _buildImage(context),
+            ),
+            Positioned(
+              bottom: 4,
+              left: 4,
+              child: Row(
+                children: [
+                  _ReorderButton(
+                    enabled: canMoveLeft,
+                    tooltip: AppStrings.moveImageLeft,
+                    icon: Icons.chevron_left,
+                    onTap: onMoveLeft,
+                    scheme: scheme,
+                  ),
+                  const SizedBox(width: 4),
+                  _ReorderButton(
+                    enabled: canMoveRight,
+                    tooltip: AppStrings.moveImageRight,
+                    icon: Icons.chevron_right,
+                    onTap: onMoveRight,
+                    scheme: scheme,
+                  ),
+                ],
+              ),
             ),
             Positioned(
               top: 4,
@@ -490,6 +588,60 @@ class _ImageThumbnail extends StatelessWidget {
         .animate()
         .fadeIn(duration: 150.ms)
         .scale(begin: const Offset(0.95, 0.95), end: const Offset(1, 1));
+  }
+
+  Widget _buildImage(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final f = image.file;
+    final url = image.url;
+
+    if (f != null) {
+      return Image.file(f, width: 80, height: 80, fit: BoxFit.cover);
+    }
+
+    if (url == null || url.trim().isEmpty) {
+      return Container(
+        width: 80,
+        height: 80,
+        color: scheme.surface,
+        alignment: Alignment.center,
+        child: Icon(
+          Icons.image_outlined,
+          color: scheme.onSurface.withValues(alpha: 0.55),
+        ),
+      );
+    }
+
+    return Image.network(
+      url,
+      width: 80,
+      height: 80,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Container(
+        width: 80,
+        height: 80,
+        color: scheme.surface,
+        alignment: Alignment.center,
+        child: Icon(
+          Icons.broken_image_outlined,
+          color: scheme.onSurface.withValues(alpha: 0.55),
+        ),
+      ),
+      loadingBuilder: (context, child, progress) {
+        if (progress == null) return child;
+        return Container(
+          width: 80,
+          height: 80,
+          color: scheme.surface,
+          alignment: Alignment.center,
+          child: const SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        );
+      },
+    );
   }
 }
 

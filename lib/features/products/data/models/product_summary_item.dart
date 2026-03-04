@@ -11,6 +11,7 @@ class ProductSummaryItem {
   final double dealPercent;
   final int? categoryId;
   final bool isTrending;
+  final List<String> sizes;
   final List<ProductColorVariantItem> variants;
 
   const ProductSummaryItem({
@@ -24,12 +25,14 @@ class ProductSummaryItem {
     required this.dealPercent,
     required this.categoryId,
     required this.isTrending,
+    required this.sizes,
     required this.variants,
   });
 
   String get derivedMainImageUrl {
     for (final v in variants) {
-      final sorted = [...v.images]..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
+      final sorted = [...v.images]
+        ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
       for (final img in sorted) {
         if (img.imageUrl.trim().isNotEmpty) return img.imageUrl;
       }
@@ -40,7 +43,20 @@ class ProductSummaryItem {
   factory ProductSummaryItem.fromJson(Map<String, dynamic> json) {
     final createdAt = DateTime.tryParse((json['created_at'] ?? '') as String);
 
-    final variantsJson = (json['product_colors'] as List?)
+    final sizesJson =
+        (json['product_sizes'] as List?)
+            ?.whereType<Map>()
+            .map((e) => e.cast<String, dynamic>())
+            .toList(growable: false) ??
+        const <Map<String, dynamic>>[];
+    final sizes = sizesJson
+        .map((e) => (e['size_label'] ?? '') as String)
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList(growable: false);
+
+    final variantsJson =
+        (json['product_colors'] as List?)
             ?.whereType<Map>()
             .map((e) => e.cast<String, dynamic>())
             .toList(growable: false) ??
@@ -72,6 +88,7 @@ class ProductSummaryItem {
                 .toDouble(),
       categoryId: (json['category_id'] as num?)?.toInt(),
       isTrending: (json['is_trending'] ?? false) as bool,
+      sizes: sizes,
       variants: variants,
     );
   }

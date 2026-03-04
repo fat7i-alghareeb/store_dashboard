@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:injectable/injectable.dart';
+import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -8,6 +10,7 @@ import '../../shared/data/supabase/supabase_constants.dart';
 import '../../categories/data/models/category_item.dart';
 import 'models/product_color.dart';
 import 'models/product_summary_item.dart';
+import 'models/update_product_variant.dart';
 
 @lazySingleton
 class ProductsSupabaseDataSource {
@@ -29,6 +32,7 @@ class ProductsSupabaseDataSource {
           '${SupabaseColumns.isDeal},'
           '${SupabaseColumns.dealPercent},'
           '${SupabaseColumns.isTrending},'
+          '${SupabaseTables.productSizes}(${SupabaseColumns.sizeLabel}),'
           '${SupabaseTables.productColors}('
           '${SupabaseColumns.id},'
           '${SupabaseColumns.colorId},'
@@ -197,6 +201,90 @@ class ProductsSupabaseDataSource {
         .eq(SupabaseColumns.id, productId);
   }
 
+  Future<void> replaceProductChildren({
+    required int productId,
+    required List<String> sizes,
+    required List<UpdateProductVariant> variants,
+  }) async {
+    await _deleteProductChildren(productId: productId);
+
+    await addSizesToProduct(productId: productId, sizes: sizes);
+
+    for (final v in variants) {
+      final productColorId = await createProductColor(
+        productId: productId,
+        colorId: v.colorId,
+      );
+
+      var displayOrder = 0;
+      final existing = v.existingImageUrls
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList(growable: false);
+      if (existing.isNotEmpty) {
+        await _supabase
+            .from(SupabaseTables.productImages)
+            .insert(
+              List.generate(existing.length, (i) {
+                return {
+                  SupabaseColumns.productColorId: productColorId,
+                  SupabaseColumns.imageUrl: existing[i],
+                  SupabaseColumns.displayOrder: i,
+                };
+              }, growable: false),
+            );
+        displayOrder = existing.length;
+      }
+
+      if (v.newImages.isNotEmpty) {
+        for (var i = 0; i < v.newImages.length; i++) {
+          final file = v.newImages[i];
+          final url = await _uploadProductImage(file);
+          await _supabase.from(SupabaseTables.productImages).insert({
+            SupabaseColumns.productColorId: productColorId,
+            SupabaseColumns.imageUrl: url,
+            SupabaseColumns.displayOrder: displayOrder + i,
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> deleteProductCascade({required int productId}) async {
+    await _deleteProductChildren(productId: productId);
+    await deleteProduct(productId: productId);
+  }
+
+  Future<void> _deleteProductChildren({required int productId}) async {
+    await _supabase
+        .from(SupabaseTables.productSizes)
+        .delete()
+        .eq(SupabaseColumns.productId, productId);
+
+    final colorRows = await _supabase
+        .from(SupabaseTables.productColors)
+        .select(SupabaseColumns.id)
+        .eq(SupabaseColumns.productId, productId);
+    final colorIds = (colorRows as List)
+        .whereType<Map>()
+        .map((e) => e[SupabaseColumns.id])
+        .whereType<num>()
+        .map((e) => e.toInt())
+        .toList(growable: false);
+
+    if (colorIds.isNotEmpty) {
+      await _supabase
+          .from(SupabaseTables.productImages)
+          .delete()
+          .inFilter(SupabaseColumns.productColorId, colorIds);
+    }
+
+    await _supabase
+        .from(SupabaseTables.productColors)
+        .delete()
+        .eq(SupabaseColumns.productId, productId);
+  }
+
   Future<void> updateProduct({
     required int productId,
     required String title,
@@ -220,16 +308,58 @@ class ProductsSupabaseDataSource {
   }
 
   Future<String> _uploadProductImage(File file) async {
-    final fileNameImage = p.basename(file.path);
-    final fileName = '${DateTime.now().millisecondsSinceEpoch}_/$fileNameImage';
-    final bytes = await file.readAsBytes();
+    final fileNameImage = p.basenameWithoutExtension(file.path);
+    final fileName =
+        '${DateTime.now().millisecondsSinceEpoch}_/$fileNameImage.jpg';
+    final bytes = await _compressProductImage(file);
 
     await _supabase.storage
         .from(SupabaseStorageBuckets.photo)
-        .uploadBinary(fileName, bytes);
+        .uploadBinary(
+          fileName,
+          bytes,
+          fileOptions: const FileOptions(contentType: 'image/jpeg'),
+        );
 
     return _supabase.storage
         .from(SupabaseStorageBuckets.photo)
         .getPublicUrl(fileName);
+  }
+
+  Future<Uint8List> _compressProductImage(
+    File file, {
+    int targetBytes = 1024 * 1024,
+    int maxDimension = 1920,
+  }) async {
+    final originalBytes = await file.readAsBytes();
+    if (originalBytes.lengthInBytes <= targetBytes) return originalBytes;
+
+    final decoded = img.decodeImage(originalBytes);
+    if (decoded == null) return originalBytes;
+
+    var current = decoded;
+    final w = current.width;
+    final h = current.height;
+    final largest = w > h ? w : h;
+    if (largest > maxDimension) {
+      final scale = maxDimension / largest;
+      final newW = (w * scale).round();
+      final newH = (h * scale).round();
+      current = img.copyResize(
+        current,
+        width: newW,
+        height: newH,
+        interpolation: img.Interpolation.average,
+      );
+    }
+
+    var quality = 92;
+    var encoded = Uint8List.fromList(img.encodeJpg(current, quality: quality));
+    while (encoded.lengthInBytes > targetBytes && quality > 45) {
+      quality -= 7;
+      encoded = Uint8List.fromList(img.encodeJpg(current, quality: quality));
+    }
+
+    return encoded;
   }
 }

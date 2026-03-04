@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:store_dashboard/core/widgets/app_notifier.dart';
 import 'package:store_dashboard/features/products/data/models/product_color.dart';
+import 'package:store_dashboard/features/products/data/models/product_summary_item.dart';
+import 'package:store_dashboard/features/products/data/models/update_product_variant.dart';
 import 'package:store_dashboard/features/products/viewmodel/products_cubit.dart';
 import 'package:store_dashboard/utils/bloc_status/bloc_status.dart';
 import 'package:store_dashboard/utils/gen/app_strings.dart';
@@ -17,7 +19,9 @@ import 'upsert_product/variant_draft.dart';
 import 'upsert_product/variants_pane.dart';
 
 class UpsertProductDialog extends StatefulWidget {
-  const UpsertProductDialog({super.key});
+  const UpsertProductDialog({super.key, this.initialProduct});
+
+  final ProductSummaryItem? initialProduct;
 
   @override
   State<UpsertProductDialog> createState() => _UpsertProductDialogState();
@@ -35,11 +39,44 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
   int? _categoryId;
 
   ProductColor? _selectedColor;
-  final List<File> _images = <File>[];
+  final List<VariantImageDraft> _images = <VariantImageDraft>[];
   final List<VariantDraft> _variants = <VariantDraft>[];
   int? _editingVariantIndex;
 
   final List<String> _sizes = <String>[];
+
+  bool get _isEdit => widget.initialProduct != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final p = widget.initialProduct;
+    if (p == null) return;
+
+    _titleController.text = p.title;
+    _descController.text = p.description;
+    _priceController.text = p.price.toString();
+    _categoryId = p.categoryId;
+
+    _sizes
+      ..clear()
+      ..addAll(p.sizes);
+
+    for (final v in p.variants) {
+      final color = v.color;
+      if (color == null) continue;
+      final sorted = [...v.images]
+        ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
+      _variants.add(
+        VariantDraft(
+          color: color,
+          images: sorted
+              .map((img) => VariantImageDraft.url(img.imageUrl))
+              .toList(growable: false),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -58,7 +95,8 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
 
     final picked = await openPickImagesDialog(context);
     if (picked.isNotEmpty) {
-      setState(() => _images.addAll(picked));
+      setState(() => _images.addAll(picked.map(VariantImageDraft.file)));
+      _syncEditingVariantDraft();
     }
   }
 
@@ -76,6 +114,31 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
         ..clear()
         ..addAll(v.images);
     });
+  }
+
+  void _syncEditingVariantDraft() {
+    final index = _editingVariantIndex;
+    final color = _selectedColor;
+    if (index == null || color == null) return;
+    if (index < 0 || index >= _variants.length) return;
+
+    _variants[index] = VariantDraft(
+      color: color,
+      images: List<VariantImageDraft>.from(_images),
+    );
+  }
+
+  void _moveDraftImage(int from, int to) {
+    if (from < 0 || from >= _images.length) return;
+    if (to < 0 || to >= _images.length) return;
+    if (from == to) return;
+
+    setState(() {
+      final item = _images.removeAt(from);
+      _images.insert(to, item);
+    });
+
+    _syncEditingVariantDraft();
   }
 
   void _saveVariantDraft() {
@@ -98,7 +161,10 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
     }
 
     setState(() {
-      final updated = VariantDraft(color: c, images: List<File>.from(_images));
+      final updated = VariantDraft(
+        color: c,
+        images: List<VariantImageDraft>.from(_images),
+      );
 
       final targetIndex = _editingVariantIndex ?? existingIndex;
       if (targetIndex >= 0) {
@@ -136,23 +202,57 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
 
     setState(() => _submitting = true);
     try {
-      await context.read<ProductsCubit>().createProduct(
-        title: _titleController.text.trim(),
-        description: _descController.text.trim(),
-        price: price,
-        categoryId: categoryId,
-        isSpecial: false,
-        isTrending: false,
-        sizes: List<String>.from(_sizes),
-        variants: _variants
-            .map(
-              (v) => CreateProductVariant(
-                colorId: v.color.id,
-                images: List<File>.from(v.images),
-              ),
-            )
-            .toList(growable: false),
-      );
+      final cubit = context.read<ProductsCubit>();
+      if (_isEdit) {
+        final productId = widget.initialProduct!.id;
+        await cubit.updateProductFull(
+          productId: productId,
+          title: _titleController.text.trim(),
+          description: _descController.text.trim(),
+          price: price,
+          categoryId: categoryId,
+          isSpecial: false,
+          isTrending: false,
+          sizes: List<String>.from(_sizes),
+          variants: _variants
+              .map(
+                (v) => UpdateProductVariant(
+                  colorId: v.color.id,
+                  newImages: v.images
+                      .map((e) => e.file)
+                      .whereType<File>()
+                      .toList(growable: false),
+                  existingImageUrls: v.images
+                      .map((e) => e.url)
+                      .whereType<String>()
+                      .where((e) => e.trim().isNotEmpty)
+                      .toList(growable: false),
+                ),
+              )
+              .toList(growable: false),
+        );
+      } else {
+        await cubit.createProduct(
+          title: _titleController.text.trim(),
+          description: _descController.text.trim(),
+          price: price,
+          categoryId: categoryId,
+          isSpecial: false,
+          isTrending: false,
+          sizes: List<String>.from(_sizes),
+          variants: _variants
+              .map(
+                (v) => CreateProductVariant(
+                  colorId: v.color.id,
+                  images: v.images
+                      .map((e) => e.file)
+                      .whereType<File>()
+                      .toList(growable: false),
+                ),
+              )
+              .toList(growable: false),
+        );
+      }
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -165,6 +265,12 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
       listener: (context, state) {
         state.actionStatus.maybeWhen(
           success: (_) async {
+            AppNotifier.success(
+              context,
+              _isEdit
+                  ? AppStrings.productUpdatedSuccessfully
+                  : AppStrings.productAddedSuccessfully,
+            );
             // Wait for loadProducts to complete before closing dialog
             await context.read<ProductsCubit>().loadProducts();
             if (context.mounted) {
@@ -184,7 +290,9 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
         return PopScope(
           canPop: !saving,
           child: AlertDialog(
-            title: Text(AppStrings.addNewProduct),
+            title: Text(
+              _isEdit ? AppStrings.editProduct : AppStrings.addNewProduct,
+            ),
             content: SizedBox(
               width: 980,
               child: Row(
@@ -200,6 +308,7 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
                       sizes: _sizes,
                       enabled: !saving,
                       categoriesStatus: state.categoriesStatus,
+                      selectedCategoryId: _categoryId,
                       onCategoryChanged: (v) => setState(() => _categoryId = v),
                       onAddSize: () {
                         final v = _sizeController.text.trim();
@@ -239,8 +348,14 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
                       onRemoveVariant: (index) {
                         setState(() => _variants.removeAt(index));
                       },
-                      onRemoveImage: (index) =>
-                          setState(() => _images.removeAt(index)),
+                      onRemoveImage: (index) {
+                        setState(() => _images.removeAt(index));
+                        _syncEditingVariantDraft();
+                      },
+                      onMoveImageLeft: (index) =>
+                          _moveDraftImage(index, index - 1),
+                      onMoveImageRight: (index) =>
+                          _moveDraftImage(index, index + 1),
                     ),
                   ),
                 ],
@@ -253,7 +368,9 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
               ),
               FilledButton(
                 onPressed: saving ? null : _submit,
-                child: Text(AppStrings.submitProduct),
+                child: Text(
+                  _isEdit ? AppStrings.apply : AppStrings.submitProduct,
+                ),
               ),
             ],
           ).animate().fadeIn(duration: 180.ms).slideY(begin: 0.03, end: 0),

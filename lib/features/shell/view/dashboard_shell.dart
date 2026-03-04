@@ -14,8 +14,34 @@ class DashboardShell extends StatefulWidget {
   State<DashboardShell> createState() => _DashboardShellState();
 }
 
-class _DashboardShellState extends State<DashboardShell> {
+class _DashboardShellState extends State<DashboardShell> with WindowListener {
   int _selectedIndex = 0;
+
+  void _mitigateStuckModifiers() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    windowManager.addListener(this);
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onWindowBlur() {
+    _mitigateStuckModifiers();
+  }
+
+  @override
+  void onWindowFocus() {
+    _mitigateStuckModifiers();
+  }
 
   late final List<Widget Function()> _screenBuilders = [
     () => const ProductsScreen(),

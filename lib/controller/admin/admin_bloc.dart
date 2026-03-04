@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:path/path.dart' as p;
+
+import 'package:store_dashboard/utils/colored_print.dart';
 part 'admin_event.dart';
 part 'admin_state.dart';
 
@@ -70,12 +72,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
                 'is_special': event.isSpecial,
               })
               .then((value) {
-                print('add product success');
+                logSuccess('Add product');
                 emit(AddProductSucces());
               });
         } catch (e) {
           emit(AddProductError());
-          print('error add product$e');
+          logFailure('Add product', e);
         }
       } else if (event is DeleteCategoryEvent) {
         emit(AdminInitial());
@@ -129,12 +131,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               .from('categories')
               .insert({'category_title': event.title, 'image': publicUrl})
               .then((value) {
-                print('add Category success');
+                logSuccess('Add category');
                 emit(AddCategorySuccess());
               });
         } catch (e) {
           emit(AddProductError());
-          print('error add product$e');
+          logFailure('Add category', e);
         }
       } else if (event is EditProductEvent) {
         emit(AdminInitial());
@@ -151,12 +153,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               })
               .eq('id', event.id)
               .then((value) {
-                print('edit product success');
+                logSuccess('Edit product');
                 emit(AddProductSucces());
               });
         } catch (e) {
           emit(AddProductError());
-          print('error add product$e');
+          logFailure('Edit product', e);
         }
       } else if (event is EditCategoryEvent) {
         emit(AdminInitial());
@@ -184,12 +186,12 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
               .update({'title': event.title, 'image': publicUrl})
               .eq('id', event.id)
               .then((value) {
-                print('add Category success');
+                logSuccess('Edit category');
                 emit(AddCategorySuccess());
               });
         } catch (e) {
           emit(AddProductError());
-          print('error add product$e');
+          logFailure('Edit category', e);
         }
       } else if (event is DeleteProductEvent) {
         emit(DeleteProductLoading());
@@ -199,10 +201,10 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           // حذف المنتج من جدول products2 حسب id
           await supabase.from('products2').delete().eq('id', event.id);
 
-          print('✅ Product deleted successfully');
+          logSuccess('Delete product');
           emit(DeleteProductSuccess());
         } catch (e) {
-          print('❌ Error deleting product: $e');
+          logFailure('Delete product', e);
           emit(DeleteProductError());
         }
       }
@@ -223,7 +225,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         .from('categories')
         .select('')
         .order('created_at', ascending: false);
-    print(categories);
+    logRequest('Fetch categories', data: categories);
 
     return List<Map<String, dynamic>>.from(categories);
   }
@@ -234,7 +236,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         .select('')
         .filter('is_deal', 'eq', true)
         .order('created_at', ascending: false);
-    print(deals);
+    logRequest('Fetch deals', data: deals);
 
     return List<Map<String, dynamic>>.from(deals);
   }
@@ -245,7 +247,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         .select('')
         .eq('id', id)
         .order('created_at', ascending: false);
-    print(product);
+    logRequest('Fetch product', data: product);
     return List<Map<String, dynamic>>.from(product);
   }
 

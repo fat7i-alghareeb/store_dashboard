@@ -42,7 +42,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               ProductsHeader(
                 onAdd: () => ProductsBody.openCreateDialog(context),
               ),
-              const Expanded(child: ProductsBody()),
+              Expanded(child: ProductsBody(state: state)),
             ],
           ).animate().fadeIn(duration: 220.ms).slideY(begin: 0.01, end: 0);
         },
