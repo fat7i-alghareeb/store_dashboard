@@ -32,6 +32,12 @@ class SupabaseColumns {
   static const sizeLabel = 'size_label';
 
   static const imageUrl = 'image_url';
+  static const productColorId = 'product_color_id';
+
+  static const isSpecial = 'is_special';
+  static const isDeal = 'is_deal';
+  static const dealPercent = 'deal_percent';
+  static const isTrending = 'is_trending';
 
   static const discountPercent = 'discount_percent';
   static const validUntil = 'valid_until';

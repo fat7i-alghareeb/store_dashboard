@@ -5,20 +5,34 @@ part of 'app_strings.dart';
 class AppStrings {
   /// About app - عن التطبيق
   static String get aboutApp => 'aboutApp'.tr();
+  /// Add - إضافة
+  static String get add => 'add'.tr();
   /// Add Category - إضافة فئة
   static String get addCategory => 'addCategory'.tr();
   /// Add Category - إضافة فئة
   static String get addCategoryPageTitle => 'addCategoryPageTitle'.tr();
+  /// Add Image - إضافة صورة
+  static String get addImage => 'addImage'.tr();
+  /// Select a color first, then add images - اختر اللون أولاً ثم أضف الصور
+  static String get addImagesAfterColor => 'addImagesAfterColor'.tr();
+  /// Add new color - إضافة لون جديد
+  static String get addNewColor => 'addNewColor'.tr();
+  /// Add new product - إضافة منتج جديد
+  static String get addNewProduct => 'addNewProduct'.tr();
   /// Add Product - إضافة منتج
   static String get addProduct => 'addProduct'.tr();
   /// Add Review - إضافة تقييم
   static String get addReview => 'addReview'.tr();
   /// Add to Cart - إضافة إلى السلة
   static String get addToCart => 'addToCart'.tr();
+  /// Add variant - إضافة خيار
+  static String get addVariant => 'addVariant'.tr();
   /// Added to cart - تمت إضافته للسلة
   static String get addedToCart => 'addedToCart'.tr();
   /// added to cart - تمت إضافته للسلة
   static String get addedToCartEn => 'addedToCartEn'.tr();
+  /// Added Variants ({count}) - الخيارات المضافة ({count})
+  static String get addedVariants => 'addedVariants'.tr();
   /// Address - العنوان
   static String get address => 'address'.tr();
   /// AI Search - بحث بالذكاء الاصطناعي
@@ -89,6 +103,10 @@ class AppStrings {
   static String get checkout => 'checkout'.tr();
   /// Color - اللون
   static String get color => 'color'.tr();
+  /// Color name - اسم اللون
+  static String get colorName => 'colorName'.tr();
+  /// This color is already added as a variant - هذا اللون مضاف بالفعل كخيار
+  static String get colorVariantAlreadyAdded => 'colorVariantAlreadyAdded'.tr();
   /// Confirm Delete - تأكيد الحذف
   static String get confirmDelete => 'confirmDelete'.tr();
   /// Confirm password - تأكيد كلمة المرور
@@ -183,6 +201,10 @@ class AppStrings {
   static String get howIsYourOrder => 'howIsYourOrder'.tr();
   /// I already have an account - لدي حساب بالفعل
   static String get iAlreadyHaveAnAccount => 'iAlreadyHaveAnAccount'.tr();
+  /// Images - الصور
+  static String get images => 'images'.tr();
+  /// Images: {count} - الصور: {count}
+  static String get imagesCount => 'imagesCount'.tr();
   /// Instagram - انستغرام
   static String get instagram => 'instagram'.tr();
   /// Kids Sunglasses - نظارات أطفال
@@ -213,6 +235,8 @@ class AppStrings {
   static String get noFavoritesYet => 'noFavoritesYet'.tr();
   /// No image selected - لم يتم اختيار صورة
   static String get noImageSelected => 'noImageSelected'.tr();
+  /// No images selected - لم يتم اختيار صور
+  static String get noImagesSelected => 'noImagesSelected'.tr();
   /// No products found - لم يتم العثور على منتجات
   static String get noProductsFound => 'noProductsFound'.tr();
   /// No products in this category - لا توجد منتجات في هذه الفئة
@@ -221,8 +245,12 @@ class AppStrings {
   static String get noResultsFound => 'noResultsFound'.tr();
   /// No reviews yet. - لا توجد تقييمات بعد.
   static String get noReviewsYet => 'noReviewsYet'.tr();
+  /// No sizes added yet - لم تتم إضافة أي مقاسات بعد
+  static String get noSizesAdded => 'noSizesAdded'.tr();
   /// No user data. - لا توجد بيانات مستخدم.
   static String get noUserData => 'noUserData'.tr();
+  /// No variants added yet. Follow the steps above to add your first color variant. - لم تُضف أي خيارات بعد. اتبع الخطوات أعلاه لإضافة أول خيار لون.
+  static String get noVariantsYet => 'noVariantsYet'.tr();
   /// OK - حسناً
   static String get ok => 'ok'.tr();
   /// or - أو
@@ -237,32 +265,48 @@ class AppStrings {
   static String get phoneNumber => 'phoneNumber'.tr();
   /// Phone (optional) - الهاتف (اختياري)
   static String get phoneOptional => 'phoneOptional'.tr();
+  /// Pick color - اختر اللون
+  static String get pickColor => 'pickColor'.tr();
   /// Pick image - اختيار صورة
   static String get pickImage => 'pickImage'.tr();
+  /// Pick images - اختر الصور
+  static String get pickImages => 'pickImages'.tr();
   /// Please enter Category name - يرجى إدخال اسم الفئة
   static String get pleaseEnterCategoryName => 'pleaseEnterCategoryName'.tr();
   /// Please enter price - يرجى إدخال السعر
   static String get pleaseEnterPrice => 'pleaseEnterPrice'.tr();
   /// Please enter product name - يرجى إدخال اسم المنتج
   static String get pleaseEnterProductName => 'pleaseEnterProductName'.tr();
+  /// Please enter a valid price - يرجى إدخال سعر صحيح
+  static String get pleaseEnterValidPrice => 'pleaseEnterValidPrice'.tr();
   /// Please fill all fields and select an image. - يرجى تعبئة جميع الحقول واختيار صورة
   static String get pleaseFillAllFieldsAndSelectImage => 'pleaseFillAllFieldsAndSelectImage'.tr();
   /// Please select a category - يرجى اختيار فئة
   static String get pleaseSelectACategory => 'pleaseSelectACategory'.tr();
+  /// Please select a color - يرجى اختيار لون
+  static String get pleaseSelectAColor => 'pleaseSelectAColor'.tr();
   /// Please select an image - يرجى اختيار صورة
   static String get pleaseSelectAnImage => 'pleaseSelectAnImage'.tr();
+  /// Please select at least one image - يرجى اختيار صورة واحدة على الأقل
+  static String get pleaseSelectAtLeastOneImage => 'pleaseSelectAtLeastOneImage'.tr();
   /// Price - السعر
   static String get price => 'price'.tr();
+  /// Price cannot be negative - لا يمكن أن يكون السعر سالباً
+  static String get priceCannotBeNegative => 'priceCannotBeNegative'.tr();
   /// Product Added - تمت إضافة المنتج
   static String get productAdded => 'productAdded'.tr();
   /// Product added successfully - تمت إضافة المنتج بنجاح
   static String get productAddedSuccessfully => 'productAddedSuccessfully'.tr();
   /// Product Details - تفاصيل المنتج
   static String get productDetails => 'productDetails'.tr();
+  /// Product info - معلومات المنتج
+  static String get productInfo => 'productInfo'.tr();
   /// Product List - قائمة المنتجات
   static String get productList => 'productList'.tr();
   /// Product name - اسم المنتج
   static String get productName => 'productName'.tr();
+  /// Products - المنتجات
+  static String get products => 'products'.tr();
   /// An error occurred while loading products - حدث خطأ أثناء تحميل المنتجات
   static String get productsLoadError => 'productsLoadError'.tr();
   /// Edit profile - تعديل الملف الشخصي
@@ -277,6 +321,8 @@ class AppStrings {
   static String get rating => 'rating'.tr();
   /// Great products from real users - منتجات رائعة من المستخدمين الحقيقيين
   static String get realUsersProducts => 'realUsersProducts'.tr();
+  /// Remove - إزالة
+  static String get remove => 'remove'.tr();
   /// Reset - إعادة ضبط
   static String get reset => 'reset'.tr();
   /// Retry - إعادة المحاولة
@@ -289,6 +335,8 @@ class AppStrings {
   static String get save => 'save'.tr();
   /// Save Changes - حفظ التغييرات
   static String get saveChanges => 'saveChanges'.tr();
+  /// Save This Variant - احفظ هذا الخيار
+  static String get saveThisVariant => 'saveThisVariant'.tr();
   /// Search... - بحث...
   static String get search => 'search'.tr();
   /// Search for anything - ابحث عن أي شيء
@@ -299,6 +347,10 @@ class AppStrings {
   static String get searchTitle => 'searchTitle'.tr();
   /// Search with EVO AI - البحث باستخدام EVO AI
   static String get searchWithEvoAi => 'searchWithEvoAi'.tr();
+  /// Select category - اختر الفئة
+  static String get selectCategory => 'selectCategory'.tr();
+  /// Select color - اختر اللون
+  static String get selectColor => 'selectColor'.tr();
   /// Select language - اختر اللغة
   static String get selectLanguage => 'selectLanguage'.tr();
   /// Send order via WhatsApp - إرسال الطلب عبر واتساب
@@ -315,6 +367,12 @@ class AppStrings {
   static String get signUp => 'signUp'.tr();
   /// Size - الحجم
   static String get size => 'size'.tr();
+  /// Example: S, M, L, XL - مثال: S, M, L, XL
+  static String get sizeExample => 'sizeExample'.tr();
+  /// Size label - المقاس
+  static String get sizeLabel => 'sizeLabel'.tr();
+  /// Sizes - المقاسات
+  static String get sizes => 'sizes'.tr();
   /// Something went wrong - حدث خطأ ما
   static String get somethingWentWrong => 'somethingWentWrong'.tr();
   /// Sort & Filter - فرز وتصفية
@@ -337,6 +395,18 @@ class AppStrings {
   static String get specialDeals => 'specialDeals'.tr();
   /// Special offers - عروض خاصة
   static String get specialOffers => 'specialOffers'.tr();
+  /// Step 1: Select a Color - الخطوة 1: اختر لوناً
+  static String get step1SelectColor => 'step1SelectColor'.tr();
+  /// Choose an existing color or create a new one - اختر لوناً موجوداً أو أنشئ لوناً جديداً
+  static String get step1SelectColorHint => 'step1SelectColorHint'.tr();
+  /// Step 2: Add Images - الخطوة 2: أضف صوراً
+  static String get step2AddImages => 'step2AddImages'.tr();
+  /// You can add multiple images for this color. Click 'Add Image' repeatedly to add more. - يمكنك إضافة عدة صور لهذا اللون. انقر 'إضافة صورة' عدة مرات لإضافة المزيد.
+  static String get step2AddImagesHint => 'step2AddImagesHint'.tr();
+  /// Step 3: Save Variant - الخطوة 3: احفظ الخيار
+  static String get step3ConfirmVariant => 'step3ConfirmVariant'.tr();
+  /// Click 'Save This Variant' when you're done adding images - انقر 'احفظ هذا الخيار' عند الانتهاء من إضافة الصور
+  static String get step3ConfirmVariantHint => 'step3ConfirmVariantHint'.tr();
   /// Store Management Wizard - معالج إدارة المتجر
   static String get storeManagementWizard => 'storeManagementWizard'.tr();
   /// Submit - إرسال
@@ -363,6 +433,8 @@ class AppStrings {
   static String get upTo => 'upTo'.tr();
   /// Username - اسم المستخدم
   static String get username => 'username'.tr();
+  /// Variants & images - Variants & images
+  static String get variantsAndImages => 'variantsAndImages'.tr();
   /// Welcome back! - مرحباً بعودتك!
   static String get welcomeBack => 'welcomeBack'.tr();
   /// WhatsApp - واتساب

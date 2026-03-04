@@ -17,6 +17,10 @@ import 'package:store_dashboard/features/categories/data/categories_supabase_dat
     as _i757;
 import 'package:store_dashboard/features/categories/viewmodel/categories_cubit.dart'
     as _i496;
+import 'package:store_dashboard/features/products/data/products_supabase_data_source.dart'
+    as _i125;
+import 'package:store_dashboard/features/products/viewmodel/products_cubit.dart'
+    as _i254;
 import 'package:store_dashboard/utils/services/injection/register_module.dart'
     as _i795;
 import 'package:store_dashboard/utils/services/localization/locale_service.dart'
@@ -41,6 +45,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i519.Client>(() => registerModule.httpClient);
     gh.lazySingleton<_i757.CategoriesSupabaseDataSource>(
       () => _i757.CategoriesSupabaseDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i125.ProductsSupabaseDataSource>(
+      () => _i125.ProductsSupabaseDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i254.ProductsCubit>(
+      () => _i254.ProductsCubit(gh<_i125.ProductsSupabaseDataSource>()),
     );
     gh.lazySingleton<_i911.ThemeController>(
       () => _i911.ThemeController(gh<_i841.StorageService>()),

@@ -11,6 +11,7 @@ class StatusBuilder<T> extends StatelessWidget {
     required this.success,
     this.loading,
     this.init,
+    this.failure,
     this.onError,
     this.onRefresh,
     required this.state,
@@ -22,6 +23,7 @@ class StatusBuilder<T> extends StatelessWidget {
   final BlocStatus<T> state;
   final Widget Function()? loading;
   final Widget Function()? init;
+  final Widget Function(String message)? failure;
   final Widget Function(T data) success;
   final Function()? onError;
   final Future<void> Function()? onRefresh;
@@ -47,12 +49,17 @@ class StatusBuilder<T> extends StatelessWidget {
       loading: () => next = loading?.call() ?? defaultLoading(),
       success: (data) => next = success(data),
       failure: (message) {
-        next = Column(
-          children: [
-            Text(message),
-            ElevatedButton(onPressed: onError, child: Text(AppStrings.reset)),
-          ],
-        );
+        next =
+            failure?.call(message) ??
+            Column(
+              children: [
+                Text(message),
+                ElevatedButton(
+                  onPressed: onError,
+                  child: Text(AppStrings.reset),
+                ),
+              ],
+            );
       },
     );
 

@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:store_dashboard/features/categories/view/categories_screen.dart';
-import 'package:store_dashboard/product_editor.dart';
+import 'package:store_dashboard/features/products/view/products_screen.dart';
 import 'package:store_dashboard/utils/gen/app_strings.dart';
 
 class DashboardShell extends StatefulWidget {
@@ -17,10 +17,20 @@ class DashboardShell extends StatefulWidget {
 class _DashboardShellState extends State<DashboardShell> {
   int _selectedIndex = 0;
 
-  late final List<Widget> _screens = const [
-    ProductEditor(),
-    CategoriesScreen(),
+  late final List<Widget Function()> _screenBuilders = [
+    () => const ProductsScreen(),
+    () => const CategoriesScreen(),
   ];
+
+  late final List<Widget?> _screenCache = List<Widget?>.filled(
+    _screenBuilders.length,
+    null,
+  );
+
+  Widget _screenAt(int index) {
+    final i = index.clamp(0, _screenBuilders.length - 1);
+    return _screenCache[i] ??= _screenBuilders[i]();
+  }
 
   List<_DashboardDestination> get _destinations => [
     _DashboardDestination(
@@ -35,7 +45,7 @@ class _DashboardShellState extends State<DashboardShell> {
 
   void _setIndex(int index) {
     if (index == _selectedIndex) return;
-    setState(() => _selectedIndex = index.clamp(0, _screens.length - 1));
+    setState(() => _selectedIndex = index.clamp(0, _screenBuilders.length - 1));
   }
 
   @override
@@ -105,8 +115,7 @@ class _DashboardShellState extends State<DashboardShell> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: _AnimatedTabStack(
-                              index: _selectedIndex,
-                              children: _screens,
+                              child: _screenAt(_selectedIndex),
                             ),
                           ),
                         ),
@@ -125,15 +134,14 @@ class _DashboardShellState extends State<DashboardShell> {
 }
 
 class _AnimatedTabStack extends StatelessWidget {
-  const _AnimatedTabStack({required this.index, required this.children});
+  const _AnimatedTabStack({required this.child});
 
-  final int index;
-  final List<Widget> children;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return IndexedStack(index: index, children: children)
-        .animate(key: ValueKey(index))
+    return child
+        .animate(key: ValueKey(child.key ?? child.runtimeType))
         .fadeIn(duration: 220.ms, curve: Curves.easeOut)
         .slideY(begin: 0.02, end: 0, duration: 260.ms, curve: Curves.easeOut);
   }
