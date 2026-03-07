@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 import 'package:window_manager/window_manager.dart';
 
 import 'package:store_dashboard/features/categories/view/categories_screen.dart';
 import 'package:store_dashboard/features/offers/view/offers_screen.dart';
 import 'package:store_dashboard/features/products/view/products_screen.dart';
+import 'package:store_dashboard/features/users/view/users_screen.dart';
 import 'package:store_dashboard/utils/gen/app_strings.dart';
 
 class DashboardShell extends StatefulWidget {
@@ -17,6 +19,12 @@ class DashboardShell extends StatefulWidget {
 
 class _DashboardShellState extends State<DashboardShell> with WindowListener {
   int _selectedIndex = 0;
+
+  Future<void> _signOut() async {
+    try {
+      await sb.Supabase.instance.client.auth.signOut();
+    } catch (_) {}
+  }
 
   void _mitigateStuckModifiers() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -48,6 +56,7 @@ class _DashboardShellState extends State<DashboardShell> with WindowListener {
     () => const ProductsScreen(),
     () => const OffersScreen(),
     () => const CategoriesScreen(),
+    () => const UsersScreen(),
   ];
 
   late final List<Widget?> _screenCache = List<Widget?>.filled(
@@ -72,6 +81,10 @@ class _DashboardShellState extends State<DashboardShell> with WindowListener {
     _DashboardDestination(
       label: AppStrings.categories,
       icon: FontAwesomeIcons.layerGroup,
+    ),
+    _DashboardDestination(
+      label: AppStrings.users,
+      icon: FontAwesomeIcons.users,
     ),
   ];
 
@@ -137,6 +150,7 @@ class _DashboardShellState extends State<DashboardShell> with WindowListener {
                   selectedIndex: _selectedIndex,
                   destinations: _destinations,
                   onSelectIndex: _setIndex,
+                  onLogout: _signOut,
                 ),
                 Expanded(
                   child: Container(
@@ -184,11 +198,13 @@ class _Sidebar extends StatelessWidget {
     required this.selectedIndex,
     required this.destinations,
     required this.onSelectIndex,
+    required this.onLogout,
   });
 
   final int selectedIndex;
   final List<_DashboardDestination> destinations;
   final ValueChanged<int> onSelectIndex;
+  final VoidCallback onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -253,6 +269,14 @@ class _Sidebar extends StatelessWidget {
                 );
               }),
               const Spacer(),
+              const Divider(height: 1),
+              const SizedBox(height: 10),
+              _SidebarItem(
+                label: AppStrings.logout,
+                icon: FontAwesomeIcons.rightFromBracket,
+                selected: false,
+                onTap: onLogout,
+              ),
             ],
           ),
         ),
@@ -382,7 +406,7 @@ class _WindowControlsState extends State<_WindowControls> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _WindowButton(
-            tooltip: 'Close',
+            tooltip: AppStrings.close,
             icon: FontAwesomeIcons.xmark,
             fg: widget.foreground,
             hoverBg: widget.closeHoverBackground,
@@ -391,7 +415,7 @@ class _WindowControlsState extends State<_WindowControls> {
           ),
 
           _WindowButton(
-            tooltip: _maximized ? 'Restore' : 'Maximize',
+            tooltip: _maximized ? AppStrings.restore : AppStrings.maximize,
             icon: _maximized
                 ? FontAwesomeIcons.windowRestore
                 : FontAwesomeIcons.windowMaximize,
@@ -401,7 +425,7 @@ class _WindowControlsState extends State<_WindowControls> {
             onPressed: _toggleMaximize,
           ),
           _WindowButton(
-            tooltip: 'Minimize',
+            tooltip: AppStrings.minimize,
             icon: FontAwesomeIcons.windowMinimize,
             fg: widget.foreground,
             hoverBg: widget.hoverBackground,

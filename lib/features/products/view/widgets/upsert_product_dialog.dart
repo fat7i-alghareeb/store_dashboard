@@ -12,6 +12,8 @@ import 'package:store_dashboard/features/products/viewmodel/products_cubit.dart'
 import 'package:store_dashboard/utils/bloc_status/bloc_status.dart';
 import 'package:store_dashboard/utils/gen/app_strings.dart';
 
+import 'manage_product_review_permissions_dialog.dart';
+
 import 'upsert_product/add_color_dialog.dart';
 import 'upsert_product/pick_images_dialog.dart';
 import 'upsert_product/product_info_pane.dart';
@@ -302,35 +304,66 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: ProductInfoPane(
-                      formKey: _formKey,
-                      titleController: _titleController,
-                      descController: _descController,
-                      priceController: _priceController,
-                      sizeController: _sizeController,
-                      sizes: _sizes,
-                      enabled: !saving,
-                      categoriesStatus: state.categoriesStatus,
-                      selectedCategoryId: _categoryId,
-                      onCategoryChanged: (v) => setState(() => _categoryId = v),
-                      isTrending: _isTrending,
-                      onTrendingChanged: (v) => setState(() => _isTrending = v),
-                      onAddSize: () {
-                        final v = _sizeController.text.trim();
-                        if (v.isEmpty) return;
-                        if (_sizes.any(
-                          (s) => s.toLowerCase() == v.toLowerCase(),
-                        )) {
-                          return;
-                        }
-                        setState(() {
-                          _sizes.add(v);
-                          _sizeController.clear();
-                        });
-                      },
-                      onRemoveSize: (index) {
-                        setState(() => _sizes.removeAt(index));
-                      },
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ProductInfoPane(
+                            formKey: _formKey,
+                            titleController: _titleController,
+                            descController: _descController,
+                            priceController: _priceController,
+                            sizeController: _sizeController,
+                            sizes: _sizes,
+                            enabled: !saving,
+                            categoriesStatus: state.categoriesStatus,
+                            selectedCategoryId: _categoryId,
+                            onCategoryChanged: (v) =>
+                                setState(() => _categoryId = v),
+                            isTrending: _isTrending,
+                            onTrendingChanged: (v) =>
+                                setState(() => _isTrending = v),
+                            onAddSize: () {
+                              final v = _sizeController.text.trim();
+                              if (v.isEmpty) return;
+                              if (_sizes.any(
+                                (s) => s.toLowerCase() == v.toLowerCase(),
+                              )) {
+                                return;
+                              }
+                              setState(() {
+                                _sizes.add(v);
+                                _sizeController.clear();
+                              });
+                            },
+                            onRemoveSize: (index) {
+                              setState(() => _sizes.removeAt(index));
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: (!_isEdit || saving)
+                                ? null
+                                : () async {
+                                    final p = widget.initialProduct;
+                                    if (p == null) return;
+                                    final cubit = context.read<ProductsCubit>();
+                                    await openManageProductReviewPermissionsDialog(
+                                      context,
+                                      productId: p.id,
+                                      productTitle: p.title,
+                                      cubit: cubit,
+                                    );
+                                  },
+                            icon: const Icon(Icons.rate_review_outlined),
+                            label: Text(
+                              AppStrings.manageProductReviewPermissions,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 16),

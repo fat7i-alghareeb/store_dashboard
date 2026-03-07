@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -35,6 +36,26 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   Future<void> load() async {
     await Future.wait([loadProducts(), loadColors(), loadCategories()]);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchUsersForReviewPermissions() {
+    return _dataSource.fetchUsersForReviewPermissions();
+  }
+
+  Future<Set<String>> fetchProductAllowedReviewUserIds({
+    required int productId,
+  }) {
+    return _dataSource.fetchProductAllowedReviewUserIds(productId: productId);
+  }
+
+  Future<void> replaceProductReviewPermissions({
+    required int productId,
+    required Set<String> allowedUserIds,
+  }) {
+    return _dataSource.replaceProductReviewPermissions(
+      productId: productId,
+      allowedUserIds: allowedUserIds,
+    );
   }
 
   Future<void> updateProductFull({
@@ -94,11 +115,16 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   Future<void> loadProducts() async {
+    debugPrint('[ProductsCubit] loadProducts -> loading');
     _safeEmit(state.copyWith(productsStatus: const BlocStatus.loading()));
     try {
       final list = await _dataSource.fetchProducts();
+      debugPrint(
+        '[ProductsCubit] loadProducts -> success (count=${list.length})',
+      );
       _safeEmit(state.copyWith(productsStatus: BlocStatus.success(list)));
     } catch (e) {
+      debugPrint('[ProductsCubit] loadProducts -> failure ($e)');
       _safeEmit(
         state.copyWith(productsStatus: BlocStatus.failure(e.toString())),
       );

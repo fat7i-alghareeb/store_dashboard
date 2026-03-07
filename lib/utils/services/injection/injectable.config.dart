@@ -13,6 +13,10 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:store_dashboard/core/theme/theme_controller.dart' as _i911;
+import 'package:store_dashboard/features/auth/data/auth_supabase_data_source.dart'
+    as _i348;
+import 'package:store_dashboard/features/auth/viewmodel/auth_cubit.dart'
+    as _i767;
 import 'package:store_dashboard/features/categories/data/categories_supabase_data_source.dart'
     as _i757;
 import 'package:store_dashboard/features/categories/viewmodel/categories_cubit.dart'
@@ -25,6 +29,10 @@ import 'package:store_dashboard/features/products/data/products_supabase_data_so
     as _i125;
 import 'package:store_dashboard/features/products/viewmodel/products_cubit.dart'
     as _i254;
+import 'package:store_dashboard/features/users/data/users_supabase_data_source.dart'
+    as _i3;
+import 'package:store_dashboard/features/users/viewmodel/users_cubit.dart'
+    as _i525;
 import 'package:store_dashboard/utils/services/injection/register_module.dart'
     as _i795;
 import 'package:store_dashboard/utils/services/localization/locale_service.dart'
@@ -47,6 +55,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.lazySingleton<_i519.Client>(() => registerModule.httpClient);
+    gh.lazySingleton<_i348.AuthSupabaseDataSource>(
+      () => _i348.AuthSupabaseDataSource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i757.CategoriesSupabaseDataSource>(
       () => _i757.CategoriesSupabaseDataSource(gh<_i454.SupabaseClient>()),
     );
@@ -56,8 +67,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i125.ProductsSupabaseDataSource>(
       () => _i125.ProductsSupabaseDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i3.UsersSupabaseDataSource>(
+      () => _i3.UsersSupabaseDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i767.AuthCubit>(
+      () => _i767.AuthCubit(gh<_i348.AuthSupabaseDataSource>()),
+    );
     gh.factory<_i254.ProductsCubit>(
       () => _i254.ProductsCubit(gh<_i125.ProductsSupabaseDataSource>()),
+    );
+    gh.factory<_i525.UsersCubit>(
+      () => _i525.UsersCubit(gh<_i3.UsersSupabaseDataSource>()),
     );
     gh.lazySingleton<_i911.ThemeController>(
       () => _i911.ThemeController(gh<_i841.StorageService>()),

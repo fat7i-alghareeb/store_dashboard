@@ -90,6 +90,9 @@ class AppStrings {
   /// Are you sure you want to delete this product? - هل أنت متأكد أنك تريد حذف هذا المنتج؟
   static String get areYouSureDeleteProduct => 'areYouSureDeleteProduct'.tr();
 
+  /// Are you sure you want to delete this user? - هل أنت متأكد أنك تريد حذف هذا المستخدم؟
+  static String get areYouSureDeleteUser => 'areYouSureDeleteUser'.tr();
+
   /// This email is already registered. Try logging in instead. - هذا البريد الإلكتروني مسجّل بالفعل. جرّب تسجيل الدخول.
   static String get authEmailAlreadyRegistered =>
       'authEmailAlreadyRegistered'.tr();
@@ -199,6 +202,9 @@ class AppStrings {
   /// Cart - السلة
   static String get cart => 'cart'.tr();
 
+  /// Actions - الإجراءات
+  static String get actions => 'actions'.tr();
+
   /// Your cart is empty - سلتك فارغة
   static String get cartEmpty => 'cartEmpty'.tr();
 
@@ -269,6 +275,101 @@ class AppStrings {
 
   /// Evolvo Dashboard - لوحة تحكم Evolvo
   static String get dashboardAppName => 'dashboardAppName'.tr();
+
+  /// Dashboard Login - تسجيل دخول لوحة التحكم
+  static String get dashboardLoginTitle => 'dashboardLoginTitle'.tr();
+
+  /// Email or username - البريد الإلكتروني أو اسم المستخدم
+  static String get emailOrUsername => 'emailOrUsername'.tr();
+
+  /// Please enter email or username - يرجى إدخال البريد الإلكتروني أو اسم المستخدم
+  static String get pleaseEnterEmailOrUsername =>
+      'pleaseEnterEmailOrUsername'.tr();
+
+  /// Please enter password - يرجى إدخال كلمة المرور
+  static String get pleaseEnterPassword => 'pleaseEnterPassword'.tr();
+
+  /// Signing in... - جارٍ تسجيل الدخول...
+  static String get signingIn => 'signingIn'.tr();
+
+  /// Invalid credentials - بيانات الدخول غير صحيحة
+  static String get invalidLogin => 'invalidLogin'.tr();
+
+  /// Unauthorized access - وصول غير مصرح
+  static String get unauthorizedAccess => 'unauthorizedAccess'.tr();
+
+  /// Your account has been suspended - تم إيقاف حسابك
+  static String get accountSuspended => 'accountSuspended'.tr();
+
+  /// Users - المستخدمون
+  static String get users => 'users'.tr();
+
+  /// User deleted successfully - تم حذف المستخدم بنجاح
+  static String get userDeletedSuccessfully => 'userDeletedSuccessfully'.tr();
+
+  /// Search users... - ابحث عن مستخدم...
+  static String get searchUsers => 'searchUsers'.tr();
+
+  /// Blocked - محظور
+  static String get blocked => 'blocked'.tr();
+
+  /// Unblocked - غير محظور
+  static String get unblocked => 'unblocked'.tr();
+
+  /// Role - الدور
+  static String get role => 'role'.tr();
+
+  /// Admin - مسؤول
+  static String get admin => 'admin'.tr();
+
+  /// Customer - عميل
+  static String get customer => 'customer'.tr();
+
+  /// Block user - حظر المستخدم
+  static String get blockUser => 'blockUser'.tr();
+
+  /// Unblock user - إلغاء حظر المستخدم
+  static String get unblockUser => 'unblockUser'.tr();
+
+  /// Manage review permissions - إدارة صلاحيات التقييم
+  static String get manageReviewPermissions => 'manageReviewPermissions'.tr();
+
+  /// Review permissions - صلاحيات التقييم
+  static String get reviewPermissions => 'reviewPermissions'.tr();
+
+  /// Can review - يمكنه التقييم
+  static String get canReview => 'canReview'.tr();
+
+  /// Cannot review - لا يمكنه التقييم
+  static String get cannotReview => 'cannotReview'.tr();
+
+  /// Select products - اختر المنتجات
+  static String get selectProducts => 'selectProducts'.tr();
+
+  /// Manage product review permissions - إدارة صلاحيات تقييم المنتج
+  static String get manageProductReviewPermissions =>
+      'manageProductReviewPermissions'.tr();
+
+  /// Close - إغلاق
+  static String get close => 'close'.tr();
+
+  /// Minimize - تصغير
+  static String get minimize => 'minimize'.tr();
+
+  /// Maximize - تكبير
+  static String get maximize => 'maximize'.tr();
+
+  /// Restore - استعادة
+  static String get restore => 'restore'.tr();
+
+  /// Newest - الأحدث
+  static String get usersSortNewest => 'usersSortNewest'.tr();
+
+  /// Oldest - الأقدم
+  static String get usersSortOldest => 'usersSortOldest'.tr();
+
+  /// Username (A-Z) - اسم المستخدم (أ-ي)
+  static String get usersSortUsernameAz => 'usersSortUsernameAz'.tr();
 
   /// Deals - العروض
   static String get deals => 'deals'.tr();
@@ -757,6 +858,15 @@ class AppStrings {
 
   /// Username - اسم المستخدم
   static String get username => 'username'.tr();
+
+  /// Status - الحالة
+  static String get status => 'status'.tr();
+
+  /// User ID - معرّف المستخدم
+  static String get userId => 'userId'.tr();
+
+  /// Blocked means this user cannot use the app. - المستخدم المحظور لا يمكنه استخدام التطبيق.
+  static String get blockedHelp => 'blockedHelp'.tr();
 
   /// Variants & images - Variants & images
   static String get variantsAndImages => 'variantsAndImages'.tr();

@@ -75,6 +75,64 @@ class ProductsSupabaseDataSource {
     return list.map(CategoryItem.fromJson).toList(growable: false);
   }
 
+  Future<List<Map<String, dynamic>>> fetchUsersForReviewPermissions() async {
+    final response = await _supabase
+        .from(SupabaseTables.users)
+        .select(
+          '${SupabaseColumns.id},'
+          '${SupabaseColumns.email},'
+          '${SupabaseColumns.username},'
+          'role,'
+          'is_blocked',
+        )
+        .neq('role', 'admin')
+        .eq('is_blocked', false)
+        .order(SupabaseColumns.createdAt, ascending: false);
+
+    return List<Map<String, dynamic>>.from(response as List);
+  }
+
+  Future<Set<String>> fetchProductAllowedReviewUserIds({
+    required int productId,
+  }) async {
+    final response = await _supabase
+        .from(SupabaseTables.productReviewPermissions)
+        .select('${SupabaseColumns.userId},can_rate')
+        .eq(SupabaseColumns.productId, productId)
+        .eq('can_rate', true);
+
+    final rows = List<Map<String, dynamic>>.from(response as List);
+    return rows
+        .map((e) => (e[SupabaseColumns.userId] ?? '').toString())
+        .toSet();
+  }
+
+  Future<void> replaceProductReviewPermissions({
+    required int productId,
+    required Set<String> allowedUserIds,
+  }) async {
+    await _supabase
+        .from(SupabaseTables.productReviewPermissions)
+        .delete()
+        .eq(SupabaseColumns.productId, productId);
+
+    if (allowedUserIds.isEmpty) return;
+
+    await _supabase
+        .from(SupabaseTables.productReviewPermissions)
+        .insert(
+          allowedUserIds
+              .map(
+                (uid) => {
+                  SupabaseColumns.userId: uid,
+                  SupabaseColumns.productId: productId,
+                  'can_rate': true,
+                },
+              )
+              .toList(growable: false),
+        );
+  }
+
   Future<ProductColor> createColor({
     required String title,
     required String hexCode,

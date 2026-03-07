@@ -20,7 +20,7 @@ import 'package:store_dashboard/utils/services/localization/locale_service.dart'
 import 'package:store_dashboard/utils/services/network/logging_http_client.dart';
 import 'package:store_dashboard/utils/tool/localization_config.dart';
 
-import 'package:store_dashboard/features/shell/view/dashboard_shell.dart';
+import 'package:store_dashboard/features/auth/view/auth_gate.dart';
 
 import 'package:window_manager/window_manager.dart';
 
@@ -127,7 +127,7 @@ class StoreControlPanel extends StatelessWidget {
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
-          home: const DashboardShell(),
+          home: const AuthGate(),
           builder: (context, child) {
             final theme = Theme.of(context);
             final overlayStyle = AppSystemUiOverlay.forTheme(theme);
