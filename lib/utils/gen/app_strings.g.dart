@@ -69,8 +69,20 @@ class AppStrings {
   /// Apply - تطبيق
   static String get apply => 'apply'.tr();
 
+  /// Assign products - تعيين المنتجات
+  static String get assignProducts => 'assignProducts'.tr();
+
   /// Arabic - العربية
   static String get arabic => 'arabic'.tr();
+
+  /// Active - مفعل
+  static String get active => 'active'.tr();
+
+  /// Inactive - غير مفعل
+  static String get inactive => 'inactive'.tr();
+
+  /// Trending - رائج
+  static String get isTrending => 'isTrending'.tr();
 
   /// Are you sure you want to delete this category? - هل أنت متأكد أنك تريد حذف هذه الفئة؟
   static String get areYouSureDeleteCategory => 'areYouSureDeleteCategory'.tr();
@@ -107,6 +119,9 @@ class AppStrings {
   /// Buy now - اشتري الآن
   static String get buyNow => 'buyNow'.tr();
 
+  /// Create - إنشاء
+  static String get create => 'create'.tr();
+
   /// By clicking on the register button, you agree to the public offer - بالنقر على زر التسجيل، فإنك توافق على العرض العام
   static String get byClickingRegisterYouAgree =>
       'byClickingRegisterYouAgree'.tr();
@@ -119,6 +134,67 @@ class AppStrings {
 
   /// Cannot open WhatsApp - لا يمكن فتح واتساب
   static String get cannotOpenWhatsApp => 'cannotOpenWhatsApp'.tr();
+
+  /// Offers - العروض
+  static String get offers => 'offers'.tr();
+
+  /// Add new offer - إضافة عرض جديد
+  static String get addNewOffer => 'addNewOffer'.tr();
+
+  /// No offers found - لا توجد عروض
+  static String get noOffersFound => 'noOffersFound'.tr();
+
+  /// Add offer - إضافة عرض
+  static String get addOffer => 'addOffer'.tr();
+
+  /// Edit offer - تعديل العرض
+  static String get editOffer => 'editOffer'.tr();
+
+  /// Offer title - عنوان العرض
+  static String get offerTitle => 'offerTitle'.tr();
+
+  /// Offer subtitle - العنوان الفرعي
+  static String get offerSubtitle => 'offerSubtitle'.tr();
+
+  /// Offer description - وصف العرض
+  static String get offerDescription => 'offerDescription'.tr();
+
+  /// Offer image URL - رابط صورة العرض
+  static String get offerImageUrl => 'offerImageUrl'.tr();
+
+  /// Discount % - نسبة الخصم %
+  static String get discountPercent => 'discountPercent'.tr();
+
+  /// Valid until (ISO date) - صالح حتى (تاريخ ISO)
+  static String get validUntilIso => 'validUntilIso'.tr();
+
+  /// Active - مفعل
+  static String get isActive => 'isActive'.tr();
+
+  /// Please enter offer title - يرجى إدخال عنوان العرض
+  static String get pleaseEnterOfferTitle => 'pleaseEnterOfferTitle'.tr();
+
+  /// Please enter a valid discount - يرجى إدخال نسبة خصم صحيحة
+  static String get pleaseEnterValidDiscount => 'pleaseEnterValidDiscount'.tr();
+
+  /// Please enter a valid date - يرجى إدخال تاريخ صحيح
+  static String get pleaseEnterValidDate => 'pleaseEnterValidDate'.tr();
+
+  /// Offer added successfully - تمت إضافة العرض بنجاح
+  static String get offerAddedSuccessfully => 'offerAddedSuccessfully'.tr();
+
+  /// Offer updated successfully - تم تحديث العرض بنجاح
+  static String get offerUpdatedSuccessfully => 'offerUpdatedSuccessfully'.tr();
+
+  /// Offer deleted successfully - تم حذف العرض بنجاح
+  static String get offerDeletedSuccessfully => 'offerDeletedSuccessfully'.tr();
+
+  /// Offer products updated successfully - تم تحديث منتجات العرض بنجاح
+  static String get offerProductsUpdatedSuccessfully =>
+      'offerProductsUpdatedSuccessfully'.tr();
+
+  /// Are you sure you want to delete this offer? - هل أنت متأكد أنك تريد حذف هذا العرض؟
+  static String get areYouSureDeleteOffer => 'areYouSureDeleteOffer'.tr();
 
   /// Cart - السلة
   static String get cart => 'cart'.tr();
@@ -307,6 +383,10 @@ class AppStrings {
 
   /// Images - الصور
   static String get images => 'images'.tr();
+
+  /// Select multiple images for this color variant - اختر عدة صور لهذا اللون
+  static String get selectMultipleImagesForVariant =>
+      'selectMultipleImagesForVariant'.tr();
 
   /// Images: {count} - الصور: {count}
   static String get imagesCount => 'imagesCount'.tr();
@@ -530,6 +610,12 @@ class AppStrings {
 
   /// Search... - بحث...
   static String get search => 'search'.tr();
+
+  /// Select all - تحديد الكل
+  static String get selectAll => 'selectAll'.tr();
+
+  /// Clear all - إلغاء تحديد الكل
+  static String get clearAll => 'clearAll'.tr();
 
   /// Search for anything - ابحث عن أي شيء
   static String get searchForAnythingEn => 'searchForAnythingEn'.tr();

@@ -65,6 +65,7 @@ class SupabaseStorageBuckets {
   static const photo = 'photo';
   static const reviewImages = 'reviews';
   static const photoCategory = 'photocategory';
+  static const offers = 'offers';
 }
 
 class SupabaseEdge {

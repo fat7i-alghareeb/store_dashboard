@@ -27,7 +27,7 @@ Future<List<File>> openPickImagesDialog(BuildContext context) async {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Select multiple images for this color variant',
+                AppStrings.selectMultipleImagesForVariant,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 12),

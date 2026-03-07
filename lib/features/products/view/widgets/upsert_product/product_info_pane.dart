@@ -18,6 +18,8 @@ class ProductInfoPane extends StatelessWidget {
     required this.categoriesStatus,
     required this.selectedCategoryId,
     required this.onCategoryChanged,
+    required this.isTrending,
+    required this.onTrendingChanged,
     required this.onAddSize,
     required this.onRemoveSize,
   });
@@ -32,6 +34,8 @@ class ProductInfoPane extends StatelessWidget {
   final BlocStatus<List<CategoryItem>> categoriesStatus;
   final int? selectedCategoryId;
   final ValueChanged<int?> onCategoryChanged;
+  final bool isTrending;
+  final ValueChanged<bool> onTrendingChanged;
   final VoidCallback onAddSize;
   final ValueChanged<int> onRemoveSize;
 
@@ -87,6 +91,13 @@ class ProductInfoPane extends StatelessWidget {
               enabled: enabled,
               maxLines: 4,
               decoration: InputDecoration(labelText: AppStrings.description),
+            ),
+            const SizedBox(height: 12),
+            SwitchListTile.adaptive(
+              value: isTrending,
+              onChanged: enabled ? onTrendingChanged : null,
+              title: Text(AppStrings.isTrending),
+              contentPadding: EdgeInsets.zero,
             ),
             const SizedBox(height: 12),
             categoriesStatus.maybeWhen(

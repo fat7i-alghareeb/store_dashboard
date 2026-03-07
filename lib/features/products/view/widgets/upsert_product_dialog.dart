@@ -36,6 +36,8 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
 
   bool _submitting = false;
 
+  bool _isTrending = false;
+
   int? _categoryId;
 
   ProductColor? _selectedColor;
@@ -57,6 +59,7 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
     _descController.text = p.description;
     _priceController.text = p.price.toString();
     _categoryId = p.categoryId;
+    _isTrending = p.isTrending;
 
     _sizes
       ..clear()
@@ -212,7 +215,7 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
           price: price,
           categoryId: categoryId,
           isSpecial: false,
-          isTrending: false,
+          isTrending: _isTrending,
           sizes: List<String>.from(_sizes),
           variants: _variants
               .map(
@@ -238,7 +241,7 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
           price: price,
           categoryId: categoryId,
           isSpecial: false,
-          isTrending: false,
+          isTrending: _isTrending,
           sizes: List<String>.from(_sizes),
           variants: _variants
               .map(
@@ -310,6 +313,8 @@ class _UpsertProductDialogState extends State<UpsertProductDialog> {
                       categoriesStatus: state.categoriesStatus,
                       selectedCategoryId: _categoryId,
                       onCategoryChanged: (v) => setState(() => _categoryId = v),
+                      isTrending: _isTrending,
+                      onTrendingChanged: (v) => setState(() => _isTrending = v),
                       onAddSize: () {
                         final v = _sizeController.text.trim();
                         if (v.isEmpty) return;

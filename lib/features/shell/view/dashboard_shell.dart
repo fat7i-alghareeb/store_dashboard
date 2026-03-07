@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:store_dashboard/features/categories/view/categories_screen.dart';
+import 'package:store_dashboard/features/offers/view/offers_screen.dart';
 import 'package:store_dashboard/features/products/view/products_screen.dart';
 import 'package:store_dashboard/utils/gen/app_strings.dart';
 
@@ -45,6 +46,7 @@ class _DashboardShellState extends State<DashboardShell> with WindowListener {
 
   late final List<Widget Function()> _screenBuilders = [
     () => const ProductsScreen(),
+    () => const OffersScreen(),
     () => const CategoriesScreen(),
   ];
 
@@ -62,6 +64,10 @@ class _DashboardShellState extends State<DashboardShell> with WindowListener {
     _DashboardDestination(
       label: AppStrings.editProducts,
       icon: FontAwesomeIcons.penToSquare,
+    ),
+    _DashboardDestination(
+      label: AppStrings.offers,
+      icon: FontAwesomeIcons.tags,
     ),
     _DashboardDestination(
       label: AppStrings.categories,

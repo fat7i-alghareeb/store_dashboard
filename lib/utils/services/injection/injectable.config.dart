@@ -17,6 +17,10 @@ import 'package:store_dashboard/features/categories/data/categories_supabase_dat
     as _i757;
 import 'package:store_dashboard/features/categories/viewmodel/categories_cubit.dart'
     as _i496;
+import 'package:store_dashboard/features/offers/data/offers_supabase_data_source.dart'
+    as _i350;
+import 'package:store_dashboard/features/offers/viewmodel/offers_cubit.dart'
+    as _i377;
 import 'package:store_dashboard/features/products/data/products_supabase_data_source.dart'
     as _i125;
 import 'package:store_dashboard/features/products/viewmodel/products_cubit.dart'
@@ -46,6 +50,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i757.CategoriesSupabaseDataSource>(
       () => _i757.CategoriesSupabaseDataSource(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i350.OffersSupabaseDataSource>(
+      () => _i350.OffersSupabaseDataSource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i125.ProductsSupabaseDataSource>(
       () => _i125.ProductsSupabaseDataSource(gh<_i454.SupabaseClient>()),
     );
@@ -60,6 +67,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i496.CategoriesCubit>(
       () => _i496.CategoriesCubit(gh<_i757.CategoriesSupabaseDataSource>()),
+    );
+    gh.factory<_i377.OffersCubit>(
+      () => _i377.OffersCubit(gh<_i350.OffersSupabaseDataSource>()),
     );
     return this;
   }
